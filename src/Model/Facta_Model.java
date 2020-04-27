@@ -11,44 +11,13 @@ public class Facta_Model {
 
     public String status = "";
 
-    private File arquivo;
-    private File arquivoEsquecidos;
-    private List<FactaLctos> lctos = new ArrayList<>();
+    private final File arquivo;
+    private final List<FactaLctos> lctos = new ArrayList<>();
 
-    public Facta_Model(File arquivo, File esquecidos) {
+    public Facta_Model(File arquivo) {
         this.arquivo = arquivo;
-        arquivoEsquecidos = esquecidos;
         //montar a lista de lctos
-        status = adicionarEsquecidos();
-        if (status.equals("")) {
-            status = montarListaLctosTXT();
-        }
-    }
-
-    private String adicionarEsquecidos() {
-        try {
-            String textoArquivo = Arquivo.ler(arquivoEsquecidos.getAbsolutePath());
-            String[] linhas = textoArquivo.split("\n");
-            for (String linha : linhas) {
-                String[] colunas = linha.split(";");
-                if (colunas.length == 5) {
-                    lctos.add(
-                            new FactaLctos(
-                                    Long.valueOf(colunas[0]),
-                                    colunas[1],
-                                    colunas[2],
-                                    new BigDecimal(colunas[3]),
-                                    new BigDecimal(colunas[4])
-                            )
-                    );
-                }
-
-            }
-            
-            return "";
-        } catch (Exception e) {
-            return "Erro ao adicionar esquecidos FACTA: " + e;
-        }
+        status = montarListaLctosTXT();
     }
 
     private String montarListaLctosTXT() {
@@ -59,10 +28,9 @@ public class Facta_Model {
             String[] arquivoLinhas = arquivoTexto.split("\n");
 
             //Percorre todas as linhas
-            for (int i = 0; i < arquivoLinhas.length; i++) {
+            for (String arquivoLinha1 : arquivoLinhas) {
                 try {
-                    String arquivoLinha = arquivoLinhas[i];
-
+                    String arquivoLinha = arquivoLinha1;
                     //Se tiver no minimo 160 posicoes
                     if (arquivoLinha.length() >= 160) {
                         String nome = arquivoLinha.substring(6, 88).replaceAll("[^a-zA-Z ]+", "").trim();
@@ -86,8 +54,8 @@ public class Facta_Model {
 
                                     BigDecimal valorParcela = new BigDecimal(
                                             splitParcela_Cpf[0]
-                                            + "."
-                                            + splitParcela_Cpf[1].substring(0, 2)
+                                                    + "."
+                                                    + splitParcela_Cpf[1].substring(0, 2)
                                     );
 
                                     String cpf = "";
@@ -102,7 +70,7 @@ public class Facta_Model {
                             }
                         }
                     }
-                } catch (Exception e) {
+                }catch (Exception e) {
                     //Se der algum erro não vai adicionar
                     //System.out.println("Erro: " + e);
                 }
@@ -114,43 +82,6 @@ public class Facta_Model {
         return r;
     }
 
-    /**
-     * Usando o arquivo Excel da FACTA adiciona linhas na lista de lançamentos
-     * facta
-     */
-//    private String montarListaLctosXLSX() {
-//        try {
-//            //abrir arquivo
-//            FileInputStream arquivo = new FileInputStream(this.arquivo);
-//
-//            XSSFWorkbook workbook = new XSSFWorkbook(arquivo);
-//            XSSFSheet sheet = workbook.getSheetAt(0);
-//
-//            for (int i = 0; i < sheet.getLastRowNum(); i++) {
-//                try {
-//                    Row row = sheet.getRow(i);
-//
-//                    long matricula;
-//                    String nome;
-//                    int prazo;
-//                    double pmt;
-//
-//                    matricula = (long) row.getCell(3).getNumericCellValue();
-//                    nome = row.getCell(5).getStringCellValue();
-//                    prazo = (int) row.getCell(10).getNumericCellValue();
-//                    pmt = row.getCell(11).getNumericCellValue();
-//
-//                    lctos.add(new FactaLctos(matricula, nome, prazo, pmt));
-//                } catch (Exception e) {
-//                }
-//            }
-//            workbook.close();
-//
-//            return "";
-//        } catch (Exception e) {
-//            return "Erro ao montar lista de lançamentos Facta! Erro: " + e;
-//        }
-//    }
     public List<FactaLctos> getLctos() {
         return lctos;
     }

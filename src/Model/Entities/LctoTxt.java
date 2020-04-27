@@ -32,13 +32,13 @@ public final class LctoTxt {
         this.obs = this.obs1 + " - " + this.obs2;
     }
 	
-	public void setMatricula(String matriculaParcial){
-	   matricula_estado = Integer.valueOf(matriculaParcial.substring(0, 8));
-	   matricula_vinculo = Integer.valueOf(matriculaParcial.substring(8, 10));
-	   matricula_pensionista = Integer.valueOf(matriculaParcial.substring(10, 12));
-	   
-	   matricula = matricula_estado + "|" + matricula_vinculo + "|" + matricula_pensionista;
-	}
+    public void setMatricula(String matriculaParcial){
+       matricula_estado = Integer.valueOf(matriculaParcial.substring(0, 8));
+       matricula_vinculo = Integer.valueOf(matriculaParcial.substring(8, 10));
+       matricula_pensionista = Integer.valueOf(matriculaParcial.substring(10, 12));
+
+       matricula = matricula_estado + "|" + matricula_vinculo + "|" + matricula_pensionista;
+    }
 	
     public void setNomeAssociado(Associados_Model associados){
        Associado a = associados.getAssociado((long) matricula_estado, (long) matricula_vinculo, (long) matricula_pensionista);

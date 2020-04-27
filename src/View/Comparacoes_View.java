@@ -1,5 +1,6 @@
 package View;
 
+import Executor.View.Carregamento;
 import Model.Entities.Comparacoes;
 import java.io.File;
 import java.io.FileInputStream;
@@ -66,12 +67,12 @@ public class Comparacoes_View {
                 carregamento.setVisible(true);
 
                 final int maxComp = listaComparacoes.size();
-                Carregamento.iniciar("Criando comparação", 0, maxComp + 3);
+                carregamento.iniciar("Criando comparação", 0, maxComp + 3);
 
                 //Percorre todas comparações
                 for (int i = 0; i < maxComp; i++) {
                     /*Altera comparação*/
-                    Carregamento.atualizar("Criando comparação " + i + " de " + maxComp, i);
+                    carregamento.atualizar("Criando comparação " + i + " de " + maxComp, i);
 
                     Comparacoes comparacao = listaComparacoes.get(i);
 
@@ -100,13 +101,13 @@ public class Comparacoes_View {
                     }
                 }
 
-                Carregamento.atualizar("Adicionando totais...", maxComp + 1);
+                carregamento.atualizar("Adicionando totais...", maxComp + 1);
                 adicionaTotalLinhas(workbook, sheet);
 
-                Carregamento.atualizar("Definindo estilos...", maxComp + 2);
+                carregamento.atualizar("Definindo estilos...", maxComp + 2);
                 definirEstilos(workbook, sheet);
 
-                Carregamento.atualizar("Salvando arquivo...", maxComp + 3);
+                carregamento.atualizar("Salvando arquivo...", maxComp + 3);
                 String nomeArquivo = "Comparação FACTA e IPERGS " + nomeLista + ".xlsx";
                 if (!salvarWorkbookComo(arquivoWk, workbook, localSalvar.getAbsolutePath() + "/" + nomeArquivo)) {
                     status = "Erro ao salvar arquivo: " + nomeArquivo + "\nVocê está com ele aberto?";

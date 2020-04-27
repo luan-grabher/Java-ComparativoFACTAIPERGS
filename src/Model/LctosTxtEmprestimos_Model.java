@@ -23,28 +23,6 @@ public class LctosTxtEmprestimos_Model {
         return lctos;
     }
 
-//    public void filtrarLctos(List<Filtro> filtros) {
-//        for (Filtro filtro : filtros) {
-//            switch (filtro.getTipo()) {
-//                case "Igual a":
-//                    lctos = lctos.stream().filter(
-//                            l -> l.getAtributo(filtro.getColuna()).equals(filtro.getFiltro())
-//                    ).collect(Collectors.toList());
-//                    break;
-//                case "Diferente de":
-//                    lctos = lctos.stream().filter(
-//                            l -> !l.getAtributo(filtro.getColuna()).equals(filtro.getFiltro())
-//                    ).collect(Collectors.toList());
-//                    break;
-//                case "Contém o filtro":
-//                    lctos = lctos.stream().filter(
-//                            l ->  naString(l.getAtributo(filtro.getColuna()), filtro.getFiltro())
-//                    ).collect(Collectors.toList());
-//                    break;
-//            }
-//        }
-//    }
-
     private boolean constructList() {
         boolean b = false;
         try {

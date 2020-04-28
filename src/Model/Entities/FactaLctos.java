@@ -10,14 +10,18 @@ public class FactaLctos {
     private String cpf;
     private BigDecimal valorFinanciado;
     private BigDecimal valorParcela;
+    private Integer nroParcelas;
+    private Long proposta;
 
-    public FactaLctos(Long matricula, String nome, String cpf, BigDecimal valorFinanciado, BigDecimal valorParcela) {
+    public FactaLctos(Long matricula, String nome, String cpf, BigDecimal valorFinanciado, BigDecimal valorParcela, Integer nroParcelas, Long proposta) {
         this.matricula = matricula;
         this.nome = nome;
         this.cpf = cpf;
         this.valorFinanciado = valorFinanciado;
         this.valorParcela = valorParcela;
-
+        this.nroParcelas = nroParcelas;
+        this.proposta = proposta;
+        
         setMatricula();
     }
 

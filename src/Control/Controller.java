@@ -24,4 +24,20 @@ public class Controller {
         }
         
     }
+    
+    public class setIpergsLctos extends Executavel{
+        public String nome = "Buscando as informações do arquivo IPERGS";
+        File file;
+
+        public setIpergsLctos(File file) {
+            this.file = file;
+        }
+        
+        @Override
+        public void run() {
+            Facta_Model model = new Facta_Model(file);
+            factaLctos = model.getLctos();
+        }
+        
+    }
 }

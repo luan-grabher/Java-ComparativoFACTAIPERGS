@@ -24,13 +24,13 @@ public class Facta_Model {
         try {
             Integer minCol = 137;
 
-            Integer[] mapNome = {0, 41};
-            Integer[] mapMatricula = {41, 55};
-            Integer[] mapValorFinanciado = {62, 77};
-            Integer[] mapValorParcela = {77, 91};
-            Integer[] mapNroParcelas = {91, 100};
-            Integer[] mapCpf = {111, 126};
-            Integer[] mapProposta = {131};
+            Integer[] mapNome = {0, 39};
+            Integer[] mapMatricula = {39, 60};
+            Integer[] mapValorFinanciado = {61, 76};
+            Integer[] mapValorParcela = {77, 90};
+            Integer[] mapNroParcelas = {91, 99};
+            Integer[] mapCpf = {110, 130};
+            Integer[] mapProposta = {130};
 
             //Abre arquivo
             String texto = Arquivo.ler(arquivo.getAbsolutePath());
@@ -39,6 +39,8 @@ public class Facta_Model {
             //Percorre todas as linhas
             for (String linha : linhas) {
                 try {
+                    String[] baseLinha = linha.split("");
+                    
                     //Se tiver no minimo 160 posicoes
                     if (linha.length() >= minCol) {
                         String nome = linha.substring(mapNome[0], mapNome[1]).replaceAll("[^a-zA-Z ]+", "").trim();
@@ -47,10 +49,10 @@ public class Facta_Model {
                         BigDecimal valorParcela = new BigDecimal(linha.substring(mapValorParcela[0], mapValorParcela[1]).replaceAll("[^0-9.]", "").trim());
                         Integer nroParcelas = Integer.valueOf(linha.substring(mapNroParcelas[0], mapNroParcelas[1]).replaceAll("[^0-9]", "").trim());
                         String cpf = linha.substring(mapCpf[0], mapCpf[1]).replaceAll("[^0-9]", "").trim();
-                        Long proposta = Long.valueOf(linha.substring(mapProposta[0], mapProposta[1]).replaceAll("[^0-9]", "").trim());
+                        Long proposta = Long.valueOf(linha.substring(mapProposta[0]).replaceAll("[^0-9]", "").trim());
                         
-                        if (!nome.equals("") & matricula > 1000000 & nroParcelas > 0 & !cpf.equals("")) {
-                            lctos.add(new FactaLctos(matricula, nome, cpf, valorFinanciado, valorParcela));
+                        if (!nome.equals("") & matricula > 1000000 & nroParcelas > 0 & !cpf.equals("") & proposta > 0) {
+                            lctos.add(new FactaLctos(matricula, nome, cpf, valorFinanciado, valorParcela,nroParcelas, proposta));
                         }
                     }
                 } catch (Exception e) {

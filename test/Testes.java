@@ -1,8 +1,6 @@
 
 import java.io.File;
-import Auxiliar.Valor;
-import java.util.ArrayList;
-import java.util.Optional;
+import Executor.View.View;
 import main.ComparativoFACTAIPERGS;
 
 public class Testes {
@@ -21,7 +19,11 @@ public class Testes {
         File arquivoIpergrs = new File(path + "IPERGS.txt");
         File localSalvar = new File(path);
 
-        ComparativoFACTAIPERGS.definirArquivos(arquivoFacta, arquivoIpergrs, localSalvar);
-        ComparativoFACTAIPERGS.executar();
+        if(localSalvar.exists() & arquivoFacta.exists() & arquivoIpergrs.exists() ){
+            ComparativoFACTAIPERGS.definirArquivos(arquivoFacta, arquivoIpergrs, localSalvar);
+            ComparativoFACTAIPERGS.executar();
+        }else{
+            View.render("Algum dos arquivos não existe filha da puta!", "error");
+        }
     }
 }

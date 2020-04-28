@@ -17,69 +17,48 @@ public class Facta_Model {
     public Facta_Model(File arquivo) {
         this.arquivo = arquivo;
         //montar a lista de lctos
-        status = montarListaLctosTXT();
+        montarListaLctosTXT();
     }
 
-    private String montarListaLctosTXT() {
-        String r = "";
+    private void montarListaLctosTXT() {
         try {
+            Integer minCol = 137;
+
+            Integer[] mapNome = {0, 41};
+            Integer[] mapMatricula = {41, 55};
+            Integer[] mapValorFinanciado = {62, 77};
+            Integer[] mapValorParcela = {77, 91};
+            Integer[] mapNroParcelas = {91, 100};
+            Integer[] mapCpf = {111, 126};
+            Integer[] mapProposta = {131};
+
             //Abre arquivo
-            String arquivoTexto = Arquivo.ler(arquivo.getAbsolutePath());
-            String[] arquivoLinhas = arquivoTexto.split("\n");
+            String texto = Arquivo.ler(arquivo.getAbsolutePath());
+            String[] linhas = texto.split("\n");
 
             //Percorre todas as linhas
-            for (String arquivoLinha1 : arquivoLinhas) {
+            for (String linha : linhas) {
                 try {
-                    String arquivoLinha = arquivoLinha1;
                     //Se tiver no minimo 160 posicoes
-                    if (arquivoLinha.length() >= 160) {
-                        String nome = arquivoLinha.substring(6, 88).replaceAll("[^a-zA-Z ]+", "").trim();
-
-                        //Verifica se nome existe
-                        if (!nome.equals("")) {
-                            Long matricula = Long.valueOf(arquivoLinha.substring(88, 111).replaceAll("[^0-9]", "").trim());
-
-                            //Verifica matricula
-                            if (matricula > 1000000) {
-                                String valorFinanciadoString = arquivoLinha.substring(111, 142).replaceAll("[^0-9.]", "").trim();
-                                BigDecimal valorFinanciado = new BigDecimal(valorFinanciadoString);
-
-                                //Verifica valor financiado
-                                //if (valorFinanciado.compareTo(BigDecimal.ZERO) == 1) {
-                                if (valorFinanciado.compareTo(BigDecimal.ZERO) != 2) { //Desativado verificação por zero
-
-                                    //Pega valor parcela e cpf
-                                    String valorParcela_cpf_String = arquivoLinha.substring(142).replaceAll("[^0-9.]", "").trim();
-                                    String[] splitParcela_Cpf = valorParcela_cpf_String.split("\\.");
-
-                                    BigDecimal valorParcela = new BigDecimal(
-                                            splitParcela_Cpf[0]
-                                                    + "."
-                                                    + splitParcela_Cpf[1].substring(0, 2)
-                                    );
-
-                                    String cpf = "";
-                                    try {
-                                        cpf = splitParcela_Cpf[1].substring(2);
-                                    } catch (Exception e) {
-                                    }
-
-                                    //System.out.println(matricula + " - " + nome);
-                                    lctos.add(new FactaLctos(matricula, nome, cpf, valorFinanciado, valorParcela));
-                                }
-                            }
+                    if (linha.length() >= minCol) {
+                        String nome = linha.substring(mapNome[0], mapNome[1]).replaceAll("[^a-zA-Z ]+", "").trim();
+                        Long matricula = Long.valueOf(linha.substring(mapMatricula[0], mapMatricula[1]).replaceAll("[^0-9]", "").trim());
+                        BigDecimal valorFinanciado = new BigDecimal(linha.substring(mapValorFinanciado[0], mapValorFinanciado[1]).replaceAll("[^0-9.]", "").trim());
+                        BigDecimal valorParcela = new BigDecimal(linha.substring(mapValorParcela[0], mapValorParcela[1]).replaceAll("[^0-9.]", "").trim());
+                        Integer nroParcelas = Integer.valueOf(linha.substring(mapNroParcelas[0], mapNroParcelas[1]).replaceAll("[^0-9]", "").trim());
+                        String cpf = linha.substring(mapCpf[0], mapCpf[1]).replaceAll("[^0-9]", "").trim();
+                        Long proposta = Long.valueOf(linha.substring(mapProposta[0], mapProposta[1]).replaceAll("[^0-9]", "").trim());
+                        
+                        if (!nome.equals("") & matricula > 1000000 & nroParcelas > 0 & !cpf.equals("")) {
+                            lctos.add(new FactaLctos(matricula, nome, cpf, valorFinanciado, valorParcela));
                         }
                     }
-                }catch (Exception e) {
-                    //Se der algum erro não vai adicionar
-                    //System.out.println("Erro: " + e);
+                } catch (Exception e) {
                 }
             }
 
         } catch (Exception e) {
         }
-
-        return r;
     }
 
     public List<FactaLctos> getLctos() {

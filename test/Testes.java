@@ -1,6 +1,8 @@
 
 import java.io.File;
 import Auxiliar.Valor;
+import java.util.ArrayList;
+import java.util.Optional;
 import main.ComparativoFACTAIPERGS;
 
 public class Testes {
@@ -14,13 +16,12 @@ public class Testes {
 
     public static void testarAplicacao() {
         //Define arquivos
-        String path = "C:\\Dropbox\\Pessoal\\Projetos\\Java\\Arquivos de Teste\\FACTA e Emprestimos";
-        File arquivoFacta = new File(path + "\\FACTA.txt");
-        File arquivoIpergrs = new File(path + "\\IPERGS.txt");
-        File arquivoEsquecidosFACTA = new File(path + "\\Esquecidos FACTA.csv");
+        String path = "test\\";
+        File arquivoFacta = new File(path + "FACTA.txt");
+        File arquivoIpergrs = new File(path + "IPERGS.txt");
         File localSalvar = new File(path);
 
-        ComparativoFACTAIPERGS.definirArquivos(arquivoFacta, arquivoIpergrs, arquivoEsquecidosFACTA, localSalvar);
+        ComparativoFACTAIPERGS.definirArquivos(arquivoFacta, arquivoIpergrs, localSalvar);
         ComparativoFACTAIPERGS.executar();
     }
 }

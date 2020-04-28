@@ -15,10 +15,10 @@ public class Ipergs_Model {
 
     public Ipergs_Model(File arquivo) {
         this.arquivo = arquivo;
-        status = montarListaLctos();
+        montarListaLctos();
     }
 
-    private String montarListaLctos() {
+    private void montarListaLctos() {
         try {
             LctosTxtEmprestimos_Model txt_model = new LctosTxtEmprestimos_Model(arquivo);
             if (txt_model.status) {
@@ -32,7 +32,9 @@ public class Ipergs_Model {
                                         Long.valueOf("" + lctoTxt.getMatricula_estado()
                                                 + getNumberNN(lctoTxt.getMatricula_vinculo())
                                                 + getNumberNN(lctoTxt.getMatricula_pensionista())),
-                                        lctoTxt.getNomeAssociado(), lctoTxt.getSituacao(),
+                                        lctoTxt.getNomeAssociado(),
+                                        lctoTxt.getCpfAssociado(),
+                                        lctoTxt.getSituacao(),
                                         lctoTxt.getValorRecebido())
                         );
                     //}else{
@@ -40,12 +42,9 @@ public class Ipergs_Model {
                     //}
                 }
 
-                return "";
             } else {
-                return "Erro ao montar lista de lançamentos do IPERGS";
             }
         } catch (Exception e) {
-            return "Erro ao montar lista de lançamentos do IPERGS. Erro: " + e;
         }
     }
     
@@ -72,5 +71,4 @@ public class Ipergs_Model {
             );
         }
     }
-
 }

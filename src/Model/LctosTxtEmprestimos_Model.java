@@ -38,7 +38,7 @@ public class LctosTxtEmprestimos_Model {
                         linha.substring(68, 98), /*OBS 1*/
                         linha.substring(98, 123) /*OBS 2*/
                 );
-                lcto.setNomeAssociado(associados);
+                lcto.setAssociado(associados);
                 lctos.add(lcto);
             }
             b = true;

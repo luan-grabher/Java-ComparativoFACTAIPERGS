@@ -10,6 +10,7 @@ public final class LctoTxt {
 	
     private String situacao;
     private String nomeAssociado;
+    private String cpfAssociado;
     private final String tipo;
     private final Long nroTipo;
     private final Float valor;
@@ -40,10 +41,11 @@ public final class LctoTxt {
        matricula = matricula_estado + "|" + matricula_vinculo + "|" + matricula_pensionista;
     }
 	
-    public void setNomeAssociado(Associados_Model associados){
+    public void setAssociado(Associados_Model associados){
        Associado a = associados.getAssociado((long) matricula_estado, (long) matricula_vinculo, (long) matricula_pensionista);
        nomeAssociado = a.getNome();
        situacao = a.getSituacao();
+       cpfAssociado = a.getCpf();
     }
 	
     public String getCSV(){
@@ -60,6 +62,11 @@ public final class LctoTxt {
     public String getNomeAssociado() {
         return nomeAssociado;
     }
+
+    public String getCpfAssociado() {
+        return cpfAssociado;
+    }
+    
 
     public String getTipo() {
         return tipo;

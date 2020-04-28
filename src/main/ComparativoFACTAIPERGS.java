@@ -41,6 +41,7 @@ public class ComparativoFACTAIPERGS {
         List<Executavel> execs = new ArrayList<>();
         
         execs.add(controller.new setFactaLctos(arquivoFacta));
+        execs.add(controller.new setIpergsLctos(arquivoIpergrs));
         
         Execution exec = new Execution(nome);
         exec.setExecutaveis(execs);

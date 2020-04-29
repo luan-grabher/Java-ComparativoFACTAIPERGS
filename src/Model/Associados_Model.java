@@ -1,6 +1,7 @@
 package Model;
 
 import Model.Entities.Associado;
+import SimpleDotEnv.Env;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,13 +11,14 @@ import nl.cad.tpsparse.tps.record.TableDefinitionRecord;
 
 public class Associados_Model {
 
+    private String tpsFolder = Env.get("tpsFolder");
     private List<Associado> associados;
 
     public Associados_Model() {
         try {
             associados = new ArrayList<>();
 
-            TpsFile tpsFile = new TpsFile(new File(Globals_Model.get("TpsAssociadosPath")));
+            TpsFile tpsFile = new TpsFile(new File(tpsFolder + "\\Associad.tps"));
 
             Map<Integer, TableDefinitionRecord> tables = tpsFile.getTableDefinitions(false);
             tables.entrySet().forEach((entry) -> {

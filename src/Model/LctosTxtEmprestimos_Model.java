@@ -11,19 +11,18 @@ public class LctosTxtEmprestimos_Model {
     private String textOfFile = "";
     private List<LctoTxt> lctos;
     public Boolean status = false;
-    public Associados_Model associados = new Associados_Model();
 
-    public LctosTxtEmprestimos_Model(File arquivo) {
+    public LctosTxtEmprestimos_Model(File arquivo, Associados_Model associados) {
         this.lctos = new ArrayList<>();
         textOfFile = Arquivo.ler(arquivo.getAbsolutePath());
-        status = constructList();
+        status = constructList(associados);
     }
 
     public List<LctoTxt> getLctos() {
         return lctos;
     }
 
-    private boolean constructList() {
+    private boolean constructList(Associados_Model associados) {
         boolean b = false;
         try {
             String[] linhasArquivo = textOfFile.split("\n");

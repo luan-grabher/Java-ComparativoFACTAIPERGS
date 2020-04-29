@@ -13,14 +13,14 @@ public class Ipergs_Model {
     private File arquivo;
     private List<IpergsLctos> lctos = new ArrayList<>();
 
-    public Ipergs_Model(File arquivo) {
+    public Ipergs_Model(File arquivo, Associados_Model associados) {
         this.arquivo = arquivo;
-        montarListaLctos();
+        montarListaLctos(associados);
     }
 
-    private void montarListaLctos() {
+    private void montarListaLctos(Associados_Model associados) {
         try {
-            LctosTxtEmprestimos_Model txt_model = new LctosTxtEmprestimos_Model(arquivo);
+            LctosTxtEmprestimos_Model txt_model = new LctosTxtEmprestimos_Model(arquivo, associados);
             if (txt_model.status) {
 
                 List<LctoTxt> lctosTxt = txt_model.getLctos();

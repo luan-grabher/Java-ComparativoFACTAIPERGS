@@ -70,9 +70,9 @@ public class Associados_Model {
                     return a;
                 }
             }
-            return new Associado(matricula.toString(), "", "", "", "", "", "", "", "MATRICULA INEXISTENTE", "", "", "", "");
+            return new Associado(matricula.toString(), "", "", "", "", "", "", "", "", "", "", "", "");
         } catch (Exception e) {
-            return new Associado(matricula.toString(), "", "", "", "", "", "", "", "MATRICULA INEXISTENTE", "", "", "", "");
+            return new Associado(matricula.toString(), "", "", "", "", "", "", "", "", "", "", "", "");
         }
 
     }

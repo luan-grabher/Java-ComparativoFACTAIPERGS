@@ -1,6 +1,6 @@
 package Model.Entities;
 
-import Model.Associados_Model;
+import Model.Tps_Model;
 
 public final class LctoTxt {
     private String matricula;
@@ -41,8 +41,8 @@ public final class LctoTxt {
        matricula = matricula_estado + "|" + matricula_vinculo + "|" + matricula_pensionista;
     }
 	
-    public void setAssociado(Associados_Model associados){
-       Associado a = associados.getAssociado((long) matricula_estado, (long) matricula_vinculo, (long) matricula_pensionista);
+    public void setAssociado(){
+       Associado a = Tps_Model.getAssociado((long) matricula_estado, (long) matricula_vinculo, (long) matricula_pensionista);
        nomeAssociado = a.getNome();
        situacao = a.getSituacao();
        cpfAssociado = a.getCpf();

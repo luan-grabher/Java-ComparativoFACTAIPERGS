@@ -42,6 +42,7 @@ public class ComparativoFACTAIPERGS {
         
         execs.add(controller.new setFactaLctos(arquivoFacta));
         execs.add(controller.new setAssociados());
+        execs.add(controller.new setContratos());
         execs.add(controller.new setIpergsLctos(arquivoIpergrs));
         
         Execution exec = new Execution(nome);

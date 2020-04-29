@@ -1,7 +1,7 @@
 package Control;
 
 import Entity.Executavel;
-import Model.Associados_Model;
+import Model.Tps_Model;
 import Model.Entities.FactaLctos;
 import Model.Entities.IpergsLctos;
 import Model.Facta_Model;
@@ -12,7 +12,6 @@ import java.util.List;
 public class Controller {
     private List<FactaLctos> factaLctos;
     private List<IpergsLctos> ipergsLctos;
-    public Associados_Model associados;
     
     public class setFactaLctos extends Executavel{
         File file;
@@ -40,7 +39,7 @@ public class Controller {
         
         @Override
         public void run() {
-            Ipergs_Model model = new Ipergs_Model(file,associados);
+            Ipergs_Model model = new Ipergs_Model(file);
             ipergsLctos = model.getLctos();
         }
         
@@ -54,8 +53,20 @@ public class Controller {
 
         @Override
         public void run() {
-            associados = new Associados_Model();
+            Tps_Model.setAssociados();
         }
         
+    }
+    
+    public class setContratos extends Executavel{
+
+        public setContratos() {
+            nome = "Buscando informações dos contratos dos associados do banco de dados";
+        }
+
+        @Override
+        public void run() {
+            Tps_Model.setContratos();
+        }
     }
 }

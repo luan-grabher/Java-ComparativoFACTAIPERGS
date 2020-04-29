@@ -12,17 +12,17 @@ public class LctosTxtEmprestimos_Model {
     private List<LctoTxt> lctos;
     public Boolean status = false;
 
-    public LctosTxtEmprestimos_Model(File arquivo, Associados_Model associados) {
+    public LctosTxtEmprestimos_Model(File arquivo) {
         this.lctos = new ArrayList<>();
         textOfFile = Arquivo.ler(arquivo.getAbsolutePath());
-        status = constructList(associados);
+        status = constructList();
     }
 
     public List<LctoTxt> getLctos() {
         return lctos;
     }
 
-    private boolean constructList(Associados_Model associados) {
+    private boolean constructList() {
         boolean b = false;
         try {
             String[] linhasArquivo = textOfFile.split("\n");
@@ -37,7 +37,7 @@ public class LctosTxtEmprestimos_Model {
                         linha.substring(68, 98), /*OBS 1*/
                         linha.substring(98, 123) /*OBS 2*/
                 );
-                lcto.setAssociado(associados);
+                lcto.setAssociado();
                 lctos.add(lcto);
             }
             b = true;

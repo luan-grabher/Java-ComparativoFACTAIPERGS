@@ -18,7 +18,8 @@ public class Associados_Model {
         try {
             associados = new ArrayList<>();
 
-            TpsFile tpsFile = new TpsFile(new File(tpsFolder + "\\Associad.tps"));
+            File fileAssociadTps = new File(tpsFolder + "\\Associad.tps");
+            TpsFile tpsFile = new TpsFile(fileAssociadTps);
 
             Map<Integer, TableDefinitionRecord> tables = tpsFile.getTableDefinitions(false);
             tables.entrySet().forEach((entry) -> {

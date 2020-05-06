@@ -1,19 +1,27 @@
 package Model.Entities;
 
+import java.math.BigDecimal;
+
 public class IpergsLctos {
     private long matricula;
+    private long associadoCodigo;
     private String nome;
     private String cpf;
     private String situacao;
-    private double valor;
+    private BigDecimal valor;
 
-    public IpergsLctos(long matricula, String nome, String cpf, String situacao, double valor) {
+    public IpergsLctos(long associadoCodigo, long matricula, String nome, String cpf, String situacao, BigDecimal valor) {
+        this.associadoCodigo = associadoCodigo;
         this.matricula = matricula;
         this.nome = nome;
         this.cpf = cpf;
         this.situacao = situacao;
         this.valor = valor;
     }
+
+    public long getAssociadoCodigo() {
+        return associadoCodigo;
+    }    
 
     public long getMatricula() {
         return matricula;
@@ -31,7 +39,7 @@ public class IpergsLctos {
         return situacao;
     }
 
-    public double getValor() {
+    public BigDecimal getValor() {
         return valor;
     }
 

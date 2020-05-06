@@ -3,7 +3,9 @@ package Model;
 import Model.Entities.Associado;
 import SimpleDotEnv.Env;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import nl.cad.tpsparse.tps.TpsFile;
@@ -15,6 +17,7 @@ public class Tps_Model {
 
     private static final String tpsFolder = Env.get("tpsFolder");
     private static final List<Associado> associados = new ArrayList<>();
+    private static final List<Contrato> contratos = new ArrayList<>();
 
     private static List<List<Object>> getTableData(String tableName) {
         List<List<Object>> returned = new ArrayList<>();
@@ -41,12 +44,12 @@ public class Tps_Model {
 
     private static List<Object> getTableFields(Map.Entry<Integer, TableDefinitionRecord> entry) {
         List<Object> fieldList = new ArrayList<>();
-        
+
         List<FieldDefinitionRecord> fields = entry.getValue().getFields();
         fields.forEach((field) -> {
             fieldList.add(field.getFieldName());
         });
-        
+
         return fieldList;
     }
 
@@ -56,21 +59,26 @@ public class Tps_Model {
 
             List<List<Object>> rows = getTableData(tableName);
             for (List<Object> row : rows) {
-                associados.add(new Associado(
-                        row.get(132).toString(), //MAT ESTADO
-                        row.get(3).toString(), //FUNCIONARIO ESTADO
-                        row.get(2).toString(), //MAT IPE
-                        row.get(83).toString(), //MAT ESTADO ANTIGA
-                        row.get(91).toString(), //MAT IPE 2
-                        row.get(84).toString(), //VINCULO
-                        row.get(85).toString(), //PENSIONISTA
-                        row.get(5).toString(), //situacao
-                        row.get(7).toString(), //NOME
-                        row.get(20).toString(), //CPF
-                        row.get(14).toString(), //DATA CADASTRO
-                        row.get(15).toString(), //DATA EXCLUSAO
-                        row.get(16).toString() //DATA OBITO
-                ));
+                try {
+                    Contrato contrato = new Contrato();
+                    contrato.setAssociadoCodigo(Long.valueOf(row.get(0).toString().replaceAll("[^0-9]", "")));
+                    contrato.setNumeroProposta(Long.valueOf(row.get(2).toString().replaceAll("[^0-9]", "")));;
+                    contrato.setDataProposta(getCalendarFromTpsDate(Integer.valueOf(row.get(3).toString().replaceAll("[^0-9]",""))));
+                    contrato.setValorFinanciado(new BigDecimal(row.get(4).toString().replaceAll("[^0-9,.]", "")));
+                    contrato.setQtdParcelas(Integer.valueOf(row.get(5).toString().replaceAll("[^0-9]", "")));
+                    contrato.setValorParcela(new BigDecimal(row.get(6).toString().replaceAll("[^0-9,.]", "")));
+                    contrato.setPrimeiroVencimento(getCalendarFromTpsDate(Integer.valueOf(row.get(7).toString().replaceAll("[^0-9]",""))));
+                    contrato.setUltimoVencimento(getCalendarFromTpsDate(Integer.valueOf(row.get(8).toString().replaceAll("[^0-9]",""))));
+                    contrato.setEncerramento(getCalendarFromTpsDate(Integer.valueOf(row.get(9).toString().replaceAll("[^0-9]",""))));
+                    contrato.setDataVencimentoRefinanciamento(getCalendarFromTpsDate(Integer.valueOf(row.get(10).toString().replaceAll("[^0-9]",""))));
+                    contrato.setContratoRecebido(row.get(7).toString());
+                    
+                    contratos.add(contrato);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(e.getMessage());
+                }
+
             }
         } catch (Exception e) {
         }
@@ -82,21 +90,25 @@ public class Tps_Model {
 
             List<List<Object>> rows = getTableData(tableName);
             for (List<Object> row : rows) {
-                associados.add(new Associado(
-                        row.get(132).toString(), //MAT ESTADO
-                        row.get(3).toString(), //FUNCIONARIO ESTADO
-                        row.get(2).toString(), //MAT IPE
-                        row.get(83).toString(), //MAT ESTADO ANTIGA
-                        row.get(91).toString(), //MAT IPE 2
-                        row.get(84).toString(), //VINCULO
-                        row.get(85).toString(), //PENSIONISTA
-                        row.get(5).toString(), //situacao
-                        row.get(7).toString(), //NOME
-                        row.get(20).toString(), //CPF
-                        row.get(14).toString(), //DATA CADASTRO
-                        row.get(15).toString(), //DATA EXCLUSAO
-                        row.get(16).toString() //DATA OBITO
-                ));
+                try {
+                    associados.add(new Associado(
+                            Long.valueOf(row.get(0).toString()),
+                            row.get(132).toString(), //MAT ESTADO
+                            row.get(3).toString(), //FUNCIONARIO ESTADO
+                            row.get(2).toString(), //MAT IPE
+                            row.get(83).toString(), //MAT ESTADO ANTIGA
+                            row.get(91).toString(), //MAT IPE 2
+                            row.get(84).toString(), //VINCULO
+                            row.get(85).toString(), //PENSIONISTA
+                            row.get(5).toString(), //situacao
+                            row.get(7).toString(), //NOME
+                            row.get(20).toString(), //CPF
+                            row.get(14).toString(), //DATA CADASTRO
+                            row.get(15).toString(), //DATA EXCLUSAO
+                            row.get(16).toString() //DATA OBITO
+                    ));
+                } catch (Exception e) {
+                }
             }
         } catch (Exception e) {
         }
@@ -122,10 +134,32 @@ public class Tps_Model {
                     return a;
                 }
             }
-            return new Associado(matricula.toString(), "", "", "", "", "", "", "", "", "", "", "", "");
+            return new Associado(Long.valueOf("0"), matricula.toString(), "", "", "", "", "", "", "", "", "", "", "", "");
         } catch (Exception e) {
-            return new Associado(matricula.toString(), "", "", "", "", "", "", "", "", "", "", "", "");
+            return new Associado(Long.valueOf("0"), matricula.toString(), "", "", "", "", "", "", "", "", "", "", "", "");
         }
 
+    }
+    
+    public static Contrato getContrato(Long numeroProposta){
+        Contrato proposta = new Contrato();
+        try {
+            for (Contrato contrato : contratos) {
+                if(contrato.getNumeroProposta() == numeroProposta ){
+                    
+                }
+            }
+        } catch (Exception e) {
+        }
+        return proposta;
+    }
+    
+    private static Calendar getCalendarFromTpsDate(Integer tpsDateInteger){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(1800, 12, 28);
+        
+        calendar.add(Calendar.DAY_OF_MONTH, tpsDateInteger);
+        
+        return calendar;
     }
 }

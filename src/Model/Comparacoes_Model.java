@@ -37,7 +37,7 @@ public class Comparacoes_Model {
                     //Define valores IPERGS
                     Long matricula = ipe.getMatricula();
                     String nome = ipe.getNome();
-                    BigDecimal ipergsValor = new BigDecimal(ipe.getValor());
+                    BigDecimal ipergsValor = ipe.getValor();
 
                     //Vai pegar com PMT
                     String situacao = "IPERGS";

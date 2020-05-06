@@ -9,6 +9,7 @@ public final class LctoTxt {
     private int matricula_pensionista;
 	
     private String situacao;
+    private long associadoCodigo;
     private String nomeAssociado;
     private String cpfAssociado;
     private final String tipo;
@@ -46,7 +47,12 @@ public final class LctoTxt {
        nomeAssociado = a.getNome();
        situacao = a.getSituacao();
        cpfAssociado = a.getCpf();
+       associadoCodigo = a.getCodigoAssociado();
     }
+
+    public long getAssociadoCodigo() {
+        return associadoCodigo;
+    }   
 	
     public String getCSV(){
         return  matricula + ";" + nomeAssociado + ";" + 

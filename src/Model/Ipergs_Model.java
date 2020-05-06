@@ -3,6 +3,7 @@ package Model;
 import Model.Entities.IpergsLctos;
 import Model.Entities.LctoTxt;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,20 +27,18 @@ public class Ipergs_Model {
                 List<LctoTxt> lctosTxt = txt_model.getLctos();
                 for (int i = 0; i < lctosTxt.size(); i++) {
                     LctoTxt lctoTxt = lctosTxt.get(i);
-                    //if (lctoTxt.getValorRecebido() > 0) {
-                        lctos.add(
-                                new IpergsLctos(
-                                        Long.valueOf("" + lctoTxt.getMatricula_estado()
-                                                + getNumberNN(lctoTxt.getMatricula_vinculo())
-                                                + getNumberNN(lctoTxt.getMatricula_pensionista())),
-                                        lctoTxt.getNomeAssociado(),
-                                        lctoTxt.getCpfAssociado(),
-                                        lctoTxt.getSituacao(),
-                                        lctoTxt.getValorRecebido())
-                        );
-                    //}else{
-                    //    System.out.println("Valor zerado");
-                    //}
+                    lctos.add(
+                            new IpergsLctos(
+                                    lctoTxt.getAssociadoCodigo(),
+                                    Long.valueOf("" + lctoTxt.getMatricula_estado()
+                                            + getNumberNN(lctoTxt.getMatricula_vinculo())
+                                            + getNumberNN(lctoTxt.getMatricula_pensionista())),
+                                    lctoTxt.getNomeAssociado(),
+                                    lctoTxt.getCpfAssociado(),
+                                    lctoTxt.getSituacao(),
+                                    new BigDecimal(lctoTxt.getValorRecebido())
+                                    )
+                    );
                 }
 
             } else {
@@ -47,8 +46,8 @@ public class Ipergs_Model {
         } catch (Exception e) {
         }
     }
-    
-    private String getStringDouble(double number){
+
+    private String getStringDouble(double number) {
         return String.format("%.2f", number);
     }
 
@@ -58,17 +57,5 @@ public class Ipergs_Model {
 
     public List<IpergsLctos> getLctos() {
         return lctos;
-    }
-
-    public void testLctos() {
-        for (int i = 0; i < lctos.size(); i++) {
-            IpergsLctos lcto = lctos.get(i);
-            System.out.println(
-                    lcto.getMatricula() + " - "
-                    + lcto.getNome() + " - "
-                    + lcto.getSituacao() + " - "
-                    + getStringDouble(lcto.getValor())
-            );
-        }
     }
 }

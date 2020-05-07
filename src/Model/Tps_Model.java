@@ -1,5 +1,6 @@
 package Model;
 
+import Model.Entities.Contrato;
 import Model.Entities.Associado;
 import SimpleDotEnv.Env;
 import java.io.File;

@@ -1,4 +1,4 @@
-package Model;
+package Model.Entities;
 
 import java.math.BigDecimal;
 import java.util.Calendar;

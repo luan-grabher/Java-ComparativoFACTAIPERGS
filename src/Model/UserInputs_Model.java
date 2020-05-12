@@ -25,7 +25,7 @@ public class UserInputs_Model {
             solicitation.setFileName("Arquivo de texto FACTA");
             solicitation.setFileTipeWithoutDot("txt");
             solicitation.setMessage("Por favor, escolha a seguir o arquivo .TXT (Texto) das mensalidades FACTA obtido no sistema interno!\n"
-                    + "OS ARQUIVOS GERADOS PELO PROGRAMA ESTARÃO NA MESMA PASTA DESTE AQRQUIVO!");
+                    + "OS ARQUIVOS GERADOS POR ESTE PROGRAMA ESTARÃO NA MESMA PASTA DESTE AQRQUIVO QUE VOCÊ IRÁ SELECIONAR AGORA!");
 
             factaFile = solicitation.get();
 

@@ -1,6 +1,8 @@
 package Model.Entities;
 
-import Model.Tps_Model;
+import tpsdb.Model.Entities.Associado;
+import tpsdb.Model.Tps_Model;
+
 
 public final class LctoTxt {
     private String matricula;

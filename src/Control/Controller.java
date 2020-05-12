@@ -1,7 +1,6 @@
 package Control;
 
 import Entity.Executavel;
-import Model.Tps_Model;
 import Model.Entities.FactaLctos;
 import Model.Entities.IpergsLctos;
 import Model.Facta_Model;
@@ -9,6 +8,7 @@ import Model.Ipergs_Model;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
+import tpsdb.Model.Tps_Model;
 
 public class Controller {
     private List<FactaLctos> factaLctos;
@@ -71,6 +71,20 @@ public class Controller {
         public void run() {
             Tps_Model.setContratos();
         }
+    }
+    
+    public class setTPSDatabase extends Executavel{
+
+        public setTPSDatabase() {
+            nome = "Buscando dados do banco de dados...";
+        }
+
+        @Override
+        public void run() {
+            Tps_Model.setAssociados();
+            Tps_Model.setContratos();
+        }
+        
     }
     
     public class setListMonthPersons extends Executavel{

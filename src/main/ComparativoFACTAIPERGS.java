@@ -74,6 +74,7 @@ public class ComparativoFACTAIPERGS {
         execs.add(controller.new setAssociados());
         execs.add(controller.new setContratos());
         execs.add(controller.new setIpergsLctos(arquivoIpergrs));
+        execs.add(controller.new setTPSDatabase());
         execs.add(controller.new setListMonthPersons(monthWork));
         
         Execution exec = new Execution("Comparativo FACTA x IPERGS");

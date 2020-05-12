@@ -68,6 +68,10 @@ public class UserInputs_Model {
 
             Integer yearSelected = View.chooseOption("Escolha o ano", "Escolha o ano em que os valores pertencem", yearsList);
             Integer monthSelected = View.chooseOption("Escolha o mês", "Escolha o mês em que os valores pertencem", monthList);
+            
+            filesMonth = Calendar.getInstance();
+            filesMonth.set(Calendar.MONTH, monthSelected+1);
+            filesMonth.set(Calendar.YEAR, Integer.valueOf(yearsList[yearSelected]));
         }
 
     }

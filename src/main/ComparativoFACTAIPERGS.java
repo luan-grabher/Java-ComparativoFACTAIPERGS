@@ -6,6 +6,7 @@ import java.io.File;
 import Executor.Execution;
 import Model.UserInputs_Model;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ComparativoFACTAIPERGS {
@@ -13,11 +14,12 @@ public class ComparativoFACTAIPERGS {
     private static File arquivoFacta;
     private static File arquivoIpergrs;
     private static File localSalvar;
+    private static Calendar filesMonth;
 
     public static void main(String[] args) {
         //Controle Aplicação
         if (setFilesWithUserInputs()) {
-            createFinalFiles();
+            //createFinalFiles();
         }
 
         System.exit(0);
@@ -46,6 +48,9 @@ public class ComparativoFACTAIPERGS {
         arquivoFacta = model.getFactaFile();
         arquivoIpergrs = model.getIpergsFile();
         localSalvar = model.getSaveFolderFile();
+        filesMonth = model.getFilesMonth();
+        
+        System.out.println(filesMonth.toString());
         
         return exec.hasErrorBreak();
     }

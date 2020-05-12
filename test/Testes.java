@@ -17,8 +17,8 @@ public class Testes {
         File localSalvar = new File(path);
 
         if(localSalvar.exists() & arquivoFacta.exists() & arquivoIpergrs.exists() ){
-            ComparativoFACTAIPERGS.definirArquivos(arquivoFacta, arquivoIpergrs, localSalvar);
-            ComparativoFACTAIPERGS.executar();
+            ComparativoFACTAIPERGS.setFiles(arquivoFacta, arquivoIpergrs, localSalvar);
+            ComparativoFACTAIPERGS.createFinalFiles();
         }else{
             View.render("Algum dos arquivos não existe filha da puta!", "error");
         }

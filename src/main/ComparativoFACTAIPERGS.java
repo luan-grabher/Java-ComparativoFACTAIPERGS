@@ -2,13 +2,9 @@ package main;
 
 import Control.Controller;
 import Entity.Executavel;
-import Model.Comparacoes_Model;
-import Model.Facta_Model;
-import Model.Ipergs_Model;
-import View.Comparacoes_View;
 import java.io.File;
 import Executor.Execution;
-import Executor.View.View;
+import Model.UserInputs_Model;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,22 +16,41 @@ public class ComparativoFACTAIPERGS {
 
     public static void main(String[] args) {
         //Controle Aplicação
-        if (pegarArquivos()) {
-            executar();
+        if (setFilesWithUserInputs()) {
+            createFinalFiles();
         }
 
         System.exit(0);
     }
 
-    public static void definirArquivos(File arquivoFACTA, File arquivoIPERGS, File localSalvar) {
+    public static void setFiles(File arquivoFACTA, File arquivoIPERGS, File localSalvar) {
         arquivoFacta = arquivoFACTA;
         arquivoIpergrs = arquivoIPERGS;
         ComparativoFACTAIPERGS.localSalvar = localSalvar;
     }
-
-    public static void executar() {
+    
+    public static boolean setFilesWithUserInputs(){
+        UserInputs_Model model = new UserInputs_Model();
+        List<Executavel> execs = new ArrayList<>();
         
-        String nome = "Comparativo FACTA x IPERGS";
+        execs.add(model.new setFactaFile());
+        execs.add(model.new setIpergsFile());
+        execs.add(model.new setMonthWorked());
+        
+        Execution exec = new Execution("Pegando informações com o usuário");
+        exec.setExecutaveis(execs);
+        exec.rodarExecutaveis();
+        exec.finalizar();
+        
+        //Define arquivos
+        arquivoFacta = model.getFactaFile();
+        arquivoIpergrs = model.getIpergsFile();
+        localSalvar = model.getSaveFolderFile();
+        
+        return exec.hasErrorBreak();
+    }
+
+    public static boolean createFinalFiles() {
         
         Controller controller = new Controller();
         List<Executavel> execs = new ArrayList<>();
@@ -45,30 +60,12 @@ public class ComparativoFACTAIPERGS {
         execs.add(controller.new setContratos());
         execs.add(controller.new setIpergsLctos(arquivoIpergrs));
         
-        Execution exec = new Execution(nome);
+        Execution exec = new Execution("Comparativo FACTA x IPERGS");
         exec.setExecutaveis(execs);
         exec.rodarExecutaveis();
         exec.finalizar();
-    }
-
-    private static boolean pegarArquivos() {
-        //Escolhe facta
-        View.render("Por favor, escolha a seguir o arquivo .TXT (Texto) das mensalidades FACTA obtido no sistema interno!", "question");
-        arquivoFacta = Selector.Arquivo.selecionar("C:\\Users", "Arquivo de Texto FACTA", "txt");
-        if (Selector.Arquivo.verifica(arquivoFacta.getAbsolutePath(), ".txt")) {
-            //Escolhe IPERGS
-            View.render("Por favor, escolha a seguir o arquivo .TXT (Texto) de empréstimos do IPERGS!", "question");
-            arquivoIpergrs = Selector.Arquivo.selecionar("C:\\Users", "Arquivo de Texto IPERGS", "txt");
-            if (Selector.Arquivo.verifica(arquivoIpergrs.getAbsolutePath(), ".txt")) {   
-                View.render("Por favor, escolha a pasta onde o programa irá salvar o comparativo!", "question");
-                localSalvar = Selector.Pasta.selecionar();
-                return Selector.Pasta.verifica(localSalvar.getAbsolutePath());
-            } else {
-                return false;
-            }
-        } else {
-            return false;
-        }
+        
+        return exec.hasErrorBreak();
     }
 
 }

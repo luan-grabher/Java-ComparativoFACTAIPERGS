@@ -7,11 +7,14 @@ import Model.Entities.IpergsLctos;
 import Model.Facta_Model;
 import Model.Ipergs_Model;
 import java.io.File;
+import java.util.Calendar;
 import java.util.List;
 
 public class Controller {
     private List<FactaLctos> factaLctos;
     private List<IpergsLctos> ipergsLctos;
+    
+    
     
     public class setFactaLctos extends Executavel{
         File file;
@@ -68,5 +71,18 @@ public class Controller {
         public void run() {
             Tps_Model.setContratos();
         }
+    }
+    
+    public class setListMonthPersons extends Executavel{
+
+        public setListMonthPersons() {
+            nome = "Definindo lista de pessoas que estão no IPERGS e tem contrato no mês informado";
+        }
+
+        @Override
+        public void run() {
+            
+        }
+        
     }
 }

@@ -7,7 +7,7 @@ import java.io.File;
 public class FileSolicitation {
     private String message;
     String fileName;
-    String fileTipeWithoutDot;
+    String fileTypeWithoutDot;
 
     public void setMessage(String message) {
         this.message = message;
@@ -18,15 +18,15 @@ public class FileSolicitation {
     }
 
     public void setFileTipeWithoutDot(String fileTipeWithoutDot) {
-        this.fileTipeWithoutDot = fileTipeWithoutDot;
+        this.fileTypeWithoutDot = fileTipeWithoutDot;
     }
     
     public File get(){
         File file = new File("C:/inexistentLocal");
         try {
             View.render(message, "question");
-            file  = Selector.Arquivo.selecionar("C:\\Users", fileName, fileTipeWithoutDot);
-            if(!Selector.Arquivo.verifica(file.getAbsolutePath(), "."  + fileTipeWithoutDot)){
+            file  = Selector.Arquivo.selecionar("C:\\Users", fileName, fileTypeWithoutDot);
+            if(!Selector.Arquivo.verifica(file.getAbsolutePath(), "."  + fileTypeWithoutDot)){
                 throw new Error("Arquivo " + fileName + " selecionado inválido!" );
             }
         } catch (Exception e) {

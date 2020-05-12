@@ -11,7 +11,7 @@ public class UserInputs_Model {
     private File ipergsFile;
     private File saveFolderFile;
     
-    private Calendar filesMonth;
+    private Calendar monthWork;
 
     public class setFactaFile extends Executavel {
 
@@ -69,9 +69,9 @@ public class UserInputs_Model {
             Integer yearSelected = View.chooseOption("Escolha o ano", "Escolha o ano em que os valores pertencem", yearsList);
             Integer monthSelected = View.chooseOption("Escolha o mês", "Escolha o mês em que os valores pertencem", monthList);
             
-            filesMonth = Calendar.getInstance();
-            filesMonth.set(Calendar.MONTH, monthSelected+1);
-            filesMonth.set(Calendar.YEAR, Integer.valueOf(yearsList[yearSelected]));
+            monthWork = Calendar.getInstance();
+            monthWork.set(Calendar.MONTH, monthSelected+1);
+            monthWork.set(Calendar.YEAR, Integer.valueOf(yearsList[yearSelected]));
         }
 
     }
@@ -88,8 +88,8 @@ public class UserInputs_Model {
         return saveFolderFile;
     }
 
-    public Calendar getFilesMonth() {
-        return filesMonth;
+    public Calendar getMonthWork() {
+        return monthWork;
     }
     
 }

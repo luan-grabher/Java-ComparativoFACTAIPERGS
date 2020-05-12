@@ -74,14 +74,16 @@ public class Controller {
     }
     
     public class setListMonthPersons extends Executavel{
-
-        public setListMonthPersons() {
+        Calendar monthWork;
+        
+        public setListMonthPersons(Calendar monthWork) {
+            this.monthWork = monthWork;
             nome = "Definindo lista de pessoas que estão no IPERGS e tem contrato no mês informado";
         }
 
         @Override
         public void run() {
-            
+            //Percorre 
         }
         
     }

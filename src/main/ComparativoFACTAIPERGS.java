@@ -14,7 +14,7 @@ public class ComparativoFACTAIPERGS {
     private static File arquivoFacta;
     private static File arquivoIpergrs;
     private static File localSalvar;
-    private static Calendar filesMonth;
+    private static Calendar monthWork;
 
     public static void main(String[] args) {
         //Controle Aplicação
@@ -25,10 +25,20 @@ public class ComparativoFACTAIPERGS {
         System.exit(0);
     }
 
-    public static void setFiles(File arquivoFACTA, File arquivoIPERGS, File localSalvar) {
-        arquivoFacta = arquivoFACTA;
-        arquivoIpergrs = arquivoIPERGS;
+    public static void setArquivoFacta(File arquivoFacta) {
+        ComparativoFACTAIPERGS.arquivoFacta = arquivoFacta;
+    }
+
+    public static void setArquivoIpergrs(File arquivoIpergrs) {
+        ComparativoFACTAIPERGS.arquivoIpergrs = arquivoIpergrs;
+    }
+
+    public static void setLocalSalvar(File localSalvar) {
         ComparativoFACTAIPERGS.localSalvar = localSalvar;
+    }
+
+    public static void setFilesMonth(Calendar filesMonth) {
+        ComparativoFACTAIPERGS.monthWork = filesMonth;
     }
     
     public static boolean setFilesWithUserInputs(){
@@ -48,9 +58,9 @@ public class ComparativoFACTAIPERGS {
         arquivoFacta = model.getFactaFile();
         arquivoIpergrs = model.getIpergsFile();
         localSalvar = model.getSaveFolderFile();
-        filesMonth = model.getFilesMonth();
+        monthWork = model.getMonthWork();
         
-        System.out.println(filesMonth.toString());
+        System.out.println(monthWork.toString());
         
         return exec.hasErrorBreak();
     }
@@ -64,6 +74,7 @@ public class ComparativoFACTAIPERGS {
         execs.add(controller.new setAssociados());
         execs.add(controller.new setContratos());
         execs.add(controller.new setIpergsLctos(arquivoIpergrs));
+        execs.add(controller.new setListMonthPersons(monthWork));
         
         Execution exec = new Execution("Comparativo FACTA x IPERGS");
         exec.setExecutaveis(execs);

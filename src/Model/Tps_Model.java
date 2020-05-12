@@ -10,7 +10,6 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import nl.cad.tpsparse.tps.TpsFile;
-import nl.cad.tpsparse.tps.TpsHeader;
 import nl.cad.tpsparse.tps.record.FieldDefinitionRecord;
 import nl.cad.tpsparse.tps.record.TableDefinitionRecord;
 

@@ -2,7 +2,7 @@ package Model.Entities;
 
 import java.math.BigDecimal;
 
-public class IpergsLctos {
+public class IpergsLcto {
     private long matricula;
     private long associadoCodigo;
     private String nome;
@@ -10,7 +10,7 @@ public class IpergsLctos {
     private String situacao;
     private BigDecimal valor;
 
-    public IpergsLctos(long associadoCodigo, long matricula, String nome, String cpf, String situacao, BigDecimal valor) {
+    public IpergsLcto(long associadoCodigo, long matricula, String nome, String cpf, String situacao, BigDecimal valor) {
         this.associadoCodigo = associadoCodigo;
         this.matricula = matricula;
         this.nome = nome;

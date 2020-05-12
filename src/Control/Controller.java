@@ -1,20 +1,21 @@
 package Control;
 
+import Auxiliar.Valor;
 import Entity.Executavel;
-import Model.Entities.FactaLctos;
-import Model.Entities.IpergsLctos;
-import Model.Facta_Model;
-import Model.Ipergs_Model;
+import Model.Entities.FactaLcto;
+import Model.Entities.IpergsLcto;
+import Model.FactaModel;
+import Model.IpergsModel;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
 import tpsdb.Model.Tps_Model;
 
 public class Controller {
-    private List<FactaLctos> factaLctos;
-    private List<IpergsLctos> ipergsLctos;
+    private List<FactaLcto> factaLctos;
+    private List<IpergsLcto> ipergsLctos;
     
-    
+    private List<Valor> totals;
     
     public class setFactaLctos extends Executavel{
         File file;
@@ -26,8 +27,7 @@ public class Controller {
         
         @Override
         public void run() {
-            Facta_Model model = new Facta_Model(file);
-            factaLctos = model.getLctos();
+            factaLctos = FactaModel.getFileList(file);
         }
         
     }
@@ -42,8 +42,7 @@ public class Controller {
         
         @Override
         public void run() {
-            Ipergs_Model model = new Ipergs_Model(file);
-            ipergsLctos = model.getLctos();
+            ipergsLctos = IpergsModel.getFileList(file);
         }
         
     }
@@ -97,7 +96,20 @@ public class Controller {
 
         @Override
         public void run() {
-            //Percorre 
+            List<Object[]> monthContracts = FactaModel.getMonthIPERGSContracts(ipergsLctos, monthWork);
+        }
+        
+    }
+    
+    public class setListTotals extends Executavel{
+
+        public setListTotals() {
+            nome = "Definindo totais";
+        }
+
+        @Override
+        public void run() {
+            totals = FactaModel.getTotals(ipergsLctos);
         }
         
     }

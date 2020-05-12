@@ -3,7 +3,7 @@ package Model.Entities;
 import Auxiliar.Valor;
 import java.math.BigDecimal;
 
-public class FactaLctos {
+public class FactaLcto {
 
     private Long matricula;
     private String nome;
@@ -13,7 +13,7 @@ public class FactaLctos {
     private Integer nroParcelas;
     private Long proposta;
 
-    public FactaLctos(Long matricula, String nome, String cpf, BigDecimal valorFinanciado, BigDecimal valorParcela, Integer nroParcelas, Long proposta) {
+    public FactaLcto(Long matricula, String nome, String cpf, BigDecimal valorFinanciado, BigDecimal valorParcela, Integer nroParcelas, Long proposta) {
         this.matricula = matricula;
         this.nome = nome;
         this.cpf = cpf;

@@ -1,8 +1,8 @@
 package Model;
 
 import Model.Entities.Comparacoes;
-import Model.Entities.FactaLctos;
-import Model.Entities.IpergsLctos;
+import Model.Entities.FactaLcto;
+import Model.Entities.IpergsLcto;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -13,12 +13,12 @@ import main.Arquivo;
 
 public class Comparacoes_Model {
 
-    private final List<FactaLctos> facta;
-    private final List<IpergsLctos> ipergs;
-    private final List<FactaLctos> esquecidosFacta = new ArrayList<>();
+    private final List<FactaLcto> facta;
+    private final List<IpergsLcto> ipergs;
+    private final List<FactaLcto> esquecidosFacta = new ArrayList<>();
     private List<Comparacoes> comparacoes = new ArrayList<>();
 
-    public Comparacoes_Model(List<FactaLctos> facta, List<IpergsLctos> ipergs) {
+    public Comparacoes_Model(List<FactaLcto> facta, List<IpergsLcto> ipergs) {
         this.facta = facta;
         this.ipergs = ipergs;
     }
@@ -31,7 +31,7 @@ public class Comparacoes_Model {
         try {
             //Cria Lista de comparação a partir do ipergrs
             for (int i = 0; i < ipergs.size(); i++) {
-                IpergsLctos ipe = ipergs.get(i);
+                IpergsLcto ipe = ipergs.get(i);
 
                 try {
                     //Define valores IPERGS
@@ -45,7 +45,7 @@ public class Comparacoes_Model {
                     BigDecimal valorFinanciado = new BigDecimal(0);
 
                     for (int j = 0; j < facta.size(); j++) {
-                        FactaLctos fac = facta.get(j);
+                        FactaLcto fac = facta.get(j);
                         //se matricula for igual da facta
                         if (fac.getMatricula() == ipe.getMatricula()) {
                             //pega entidade facta
@@ -74,7 +74,7 @@ public class Comparacoes_Model {
     public String salvarEsquecidosFacta(File localSalvar) {
         try {
             //Cria lista de esquecidos
-            for (FactaLctos f : facta) {
+            for (FactaLcto f : facta) {
                 if (ipergs.stream().filter(i -> i.getMatricula() == f.getMatricula()).count() == 0) {
                     esquecidosFacta.add(f);
                 }
@@ -82,7 +82,7 @@ public class Comparacoes_Model {
 
             //Salva lista
             StringBuilder texto = new StringBuilder();
-            for (FactaLctos esquecido : esquecidosFacta) {
+            for (FactaLcto esquecido : esquecidosFacta) {
                 texto.append("\n");
                 texto.append(esquecido.getMatricula());
                 texto.append(";");

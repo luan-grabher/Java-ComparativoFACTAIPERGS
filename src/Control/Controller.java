@@ -10,6 +10,7 @@ import View.FactaView;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import tpsdb.Model.Tps_Model;
 
 public class Controller {
@@ -17,7 +18,7 @@ public class Controller {
     private List<IpergsLcto> ipergsLctos;
     private List<Object[]> monthContracts;
     
-    private List<Valor> totals;
+    private Map<String, Double> totals;
     
     public class setFactaLctos extends Executavel{
         File file;

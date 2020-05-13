@@ -8,7 +8,9 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import main.Arquivo;
 import tpsdb.Model.Entities.Contrato;
@@ -89,8 +91,9 @@ public class FactaModel {
         return lctos;
     }
     
-    public static List<Valor> getTotals(List<IpergsLcto> ipergsLctos, List<Object[]> monthContracts){
-        List<Valor> totals = new ArrayList<>();
+    public static Map<String, Double> getTotals(List<IpergsLcto> ipergsLctos, List<Object[]> monthContracts){
+        Map<String, Double> totals = new HashMap<>();
+        
         
         BigDecimal totalIpergs = new BigDecimal(IpergsModel.getTotal(ipergsLctos).toString());
         
@@ -107,13 +110,15 @@ public class FactaModel {
         //BigDecimal salesSinapersPercent = totalFinanced.multiply(onePercent);
         
         
-        //Add to list
-        totals.add(new Valor(totalIpergs,"ipergs"));
+        //Add to map
+        totals.put("ipergs", totalIpergs.doubleValue());
+        //totals.add(new Valor(totalIpergs,"ipergs"));
         //totals.add(new Valor(sefaz,"Total IPERGS SEFAZ 1%"));
         //totals.add(new Valor(ipergsLiquid,"Total IPERGS Liquido"));
         
         //totals.add(new Valor(sinapersHalfPercent,"PMT SINAPERS 0,5%"));
-        totals.add(new Valor(totalFinanced,"financed")); //Valor total financiado no mÊs
+        //totals.add(new Valor(totalFinanced,"financed")); //Valor total financiado no mÊs
+        totals.put("financed", totalFinanced.doubleValue());
         //totals.add(new Valor(salesSinapersPercent,"Valor Venda 1%")); //repasse sinapers
         
         return totals;

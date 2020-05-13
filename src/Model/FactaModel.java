@@ -89,7 +89,7 @@ public class FactaModel {
         return lctos;
     }
     
-    public static List<Valor> getTotals(List<IpergsLcto> ipergsLctos){
+    public static List<Valor> getTotals(List<IpergsLcto> ipergsLctos, List<Object[]> monthContracts){
         List<Valor> totals = new ArrayList<>();
         
         BigDecimal totalIpergs = new BigDecimal(IpergsModel.getTotal(ipergsLctos).toString());
@@ -103,20 +103,31 @@ public class FactaModel {
         BigDecimal ipergsLiquid = totalIpergs.add(sefaz.negate());
         
         BigDecimal sinapersHalfPercent = ipergsLiquid.multiply(halfPercent);
+        BigDecimal totalFinanced = getTotalFinanced(monthContracts);
+        BigDecimal salesSinapersPercent = totalFinanced.multiply(onePercent);
         
         
         //Add to list
         totals.add(new Valor(totalIpergs,"Total IPERGS"));
         totals.add(new Valor(sefaz,"Total IPERGS SEFAZ 1%"));
         totals.add(new Valor(ipergsLiquid,"Total IPERGS Liquido"));
+        
         totals.add(new Valor(sinapersHalfPercent,"PMT SINAPERS 0,5%"));
+        totals.add(new Valor(totalFinanced,"Total Venda")); //Valor total financiado no mÊs
+        totals.add(new Valor(salesSinapersPercent,"Valor Venda 1%")); //repasse sinapers
         
         return totals;
     }
     
-    private static BigDecimal getTotalFinanced(){
+    private static BigDecimal getTotalFinanced(List<Object[]> monthContracts){
         //Usando lista de contratos do mês pega totalfinanciado
+        BigDecimal total = new BigDecimal(BigInteger.ZERO);
         
-        return new BigDecimal(BigInteger.ONE);
+        for (Object[] monthContract : monthContracts) {
+            Contrato contract = (Contrato) monthContract[1];
+            total.add(contract.getValorFinanciado());
+        }
+        
+        return total;
     }
 }

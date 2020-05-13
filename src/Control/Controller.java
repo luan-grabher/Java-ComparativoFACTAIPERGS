@@ -14,6 +14,7 @@ import tpsdb.Model.Tps_Model;
 public class Controller {
     private List<FactaLcto> factaLctos;
     private List<IpergsLcto> ipergsLctos;
+    private List<Object[]> monthContracts;
     
     private List<Valor> totals;
     
@@ -96,7 +97,7 @@ public class Controller {
 
         @Override
         public void run() {
-            List<Object[]> monthContracts = FactaModel.getMonthIPERGSContracts(ipergsLctos, monthWork);
+            monthContracts = FactaModel.getMonthIPERGSContracts(ipergsLctos, monthWork);
         }
         
     }
@@ -109,7 +110,7 @@ public class Controller {
 
         @Override
         public void run() {
-            totals = FactaModel.getTotals(ipergsLctos);
+            totals = FactaModel.getTotals(ipergsLctos, monthContracts);
         }
         
     }

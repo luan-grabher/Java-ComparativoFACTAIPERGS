@@ -5,6 +5,7 @@ import JExcel.JExcel;
 import Model.Entities.IpergsLcto;
 import java.io.File;
 import java.io.FileInputStream;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -16,7 +17,7 @@ import tpsdb.Model.Entities.Contrato;
 
 public class FactaView {
 
-    private final Map<String, Double> totals;
+    private final Map<String, BigDecimal> totals;
     private final List<Object[]> monthContracts;
     private final Calendar monthWorked;
     private final Calendar lastMonth;
@@ -28,7 +29,7 @@ public class FactaView {
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
 
-    public FactaView(Map<String, Double> totals, List<Object[]> monthContracts, File saveFolder, Calendar monthWorked) {
+    public FactaView(Map<String, BigDecimal> totals, List<Object[]> monthContracts, File saveFolder, Calendar monthWorked) {
         this.totals = totals;
         this.monthContracts = monthContracts;
         this.saveFolder = saveFolder;
@@ -98,16 +99,42 @@ public class FactaView {
     private void printTotals() {
         Integer totalsStartRow = initialRow + countContracts + 2;
         
-        Integer cellName = JExcel.Cell("E");
-        Integer cellValue = JExcel.Cell("F");
+        String cellName = "E";
+        String cellValue = "F";
         
+        Integer cellNameInt = JExcel.Cell(cellName);
+        Integer cellValueInt = JExcel.Cell(cellValue);
         
-        Double ipergs = totals.get("ipergs");
+        //Defini totais
+        //Auxiliares
+        //BigDecimal onePercent = new BigDecimal("0.01");
+        //BigDecimal halfPercent = new BigDecimal("0.005");
+        
+        //Totals
+        BigDecimal ipergs = totals.get("ipergs");
+        //BigDecimal sefaz = ipergs.multiply(onePercent);
+        //BigDecimal ipergsLiquid = ipergs.add(sefaz.negate());
+        
+        //BigDecimal sinapersHalfPercent = ipergsLiquid.multiply(halfPercent);
+        BigDecimal financed = totals.get("financed");
+        //BigDecimal salesSinapersPercent = financed.multiply(onePercent);
+        
+        //Rows
+        Integer 
+        
 
         //Define Titulos
         XSSFRow row = sheet.getRow(totalsStartRow + 1);
-        row.getCell(cellName).setCellValue("Total IPERGS");
-        row.getCell(cellValue).setCellValue(ipergs);
+        row.getCell(cellNameInt).setCellValue("Total IPERGS");
+        row.getCell(cellValueInt).setCellValue(ipergs.doubleValue());
+        
+        row = sheet.getRow(totalsStartRow + 1);
+        row.getCell(cellNameInt).setCellValue("Total IPERGS SEFAZ 1%");
+        row.getCell(cellValueInt).setCellFormula("ROUND(" + cellValueInt + (totalsStartRow + 2) + " * 0.01,2)");
+        
+        row = sheet.getRow(totalsStartRow + 1);
+        row.getCell(cellNameInt).setCellValue("Total IPERGS");
+        row.getCell(cellValueInt).setCellValue(totals.get("financed").doubleValue());
         
         sheet.getRow(totalsStartRow + 1).getCell(1).setCellValue("Total IPERGS");
         sheet.getRow(totalsStartRow + 2).getCell(1).setCellValue("VALOR TOTAL IPERGS - 1% SEFAZ");

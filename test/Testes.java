@@ -4,7 +4,9 @@ import View.FactaView;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Testes {
 
@@ -13,7 +15,7 @@ public class Testes {
     }
 
     public static void factaView() {
-        List<Valor> totals =  new ArrayList<>();
+        Map<String, BigDecimal> totals =  new HashMap<>();
         List<Object[]> monthContracts = new ArrayList<>();
         File saveFolder = new File("C:\\Users\\ti01\\Documents\\NetBeans Projects\\Java-ComparativoFACTAIPERGS");
         Calendar monthWorked =  Calendar.getInstance();

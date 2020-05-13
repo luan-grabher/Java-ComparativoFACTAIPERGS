@@ -8,6 +8,7 @@ import Model.FactaModel;
 import Model.IpergsModel;
 import View.FactaView;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
@@ -18,7 +19,7 @@ public class Controller {
     private List<IpergsLcto> ipergsLctos;
     private List<Object[]> monthContracts;
     
-    private Map<String, Double> totals;
+    private Map<String, BigDecimal> totals;
     
     public class setFactaLctos extends Executavel{
         File file;

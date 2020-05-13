@@ -6,6 +6,7 @@ import Model.Entities.FactaLcto;
 import Model.Entities.IpergsLcto;
 import Model.FactaModel;
 import Model.IpergsModel;
+import View.FactaView;
 import java.io.File;
 import java.util.Calendar;
 import java.util.List;
@@ -111,6 +112,20 @@ public class Controller {
         @Override
         public void run() {
             totals = FactaModel.getTotals(ipergsLctos, monthContracts);
+        }
+        
+    }
+    
+    public class createFactaFinalView extends Executavel{
+
+        public createFactaFinalView() {
+            nome = "Criando arquivo final FACTA";
+        }
+
+        @Override
+        public void run() {
+            FactaView view = new FactaView(totals, monthContracts);
+            view.createExcelFile();
         }
         
     }

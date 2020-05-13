@@ -95,26 +95,26 @@ public class FactaModel {
         BigDecimal totalIpergs = new BigDecimal(IpergsModel.getTotal(ipergsLctos).toString());
         
         //Auxiliares
-        BigDecimal onePercent = new BigDecimal("0.01");
-        BigDecimal halfPercent = new BigDecimal("0.005");
+        //BigDecimal onePercent = new BigDecimal("0.01");
+        //BigDecimal halfPercent = new BigDecimal("0.005");
         
         //Totals
-        BigDecimal sefaz = totalIpergs.multiply(onePercent);
-        BigDecimal ipergsLiquid = totalIpergs.add(sefaz.negate());
+        //BigDecimal sefaz = totalIpergs.multiply(onePercent);
+        //BigDecimal ipergsLiquid = totalIpergs.add(sefaz.negate());
         
-        BigDecimal sinapersHalfPercent = ipergsLiquid.multiply(halfPercent);
+        //BigDecimal sinapersHalfPercent = ipergsLiquid.multiply(halfPercent);
         BigDecimal totalFinanced = getTotalFinanced(monthContracts);
-        BigDecimal salesSinapersPercent = totalFinanced.multiply(onePercent);
+        //BigDecimal salesSinapersPercent = totalFinanced.multiply(onePercent);
         
         
         //Add to list
-        totals.add(new Valor(totalIpergs,"Total IPERGS"));
-        totals.add(new Valor(sefaz,"Total IPERGS SEFAZ 1%"));
-        totals.add(new Valor(ipergsLiquid,"Total IPERGS Liquido"));
+        totals.add(new Valor(totalIpergs,"ipergs"));
+        //totals.add(new Valor(sefaz,"Total IPERGS SEFAZ 1%"));
+        //totals.add(new Valor(ipergsLiquid,"Total IPERGS Liquido"));
         
-        totals.add(new Valor(sinapersHalfPercent,"PMT SINAPERS 0,5%"));
-        totals.add(new Valor(totalFinanced,"Total Venda")); //Valor total financiado no mÊs
-        totals.add(new Valor(salesSinapersPercent,"Valor Venda 1%")); //repasse sinapers
+        //totals.add(new Valor(sinapersHalfPercent,"PMT SINAPERS 0,5%"));
+        totals.add(new Valor(totalFinanced,"financed")); //Valor total financiado no mÊs
+        //totals.add(new Valor(salesSinapersPercent,"Valor Venda 1%")); //repasse sinapers
         
         return totals;
     }

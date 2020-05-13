@@ -117,14 +117,18 @@ public class Controller {
     }
     
     public class createFactaFinalView extends Executavel{
+        private final File saveFolder;
+        private final Calendar monthWorked;
 
-        public createFactaFinalView() {
+        public createFactaFinalView(File saveFolder, Calendar monthWorked) {
+            this.saveFolder = saveFolder;
+            this.monthWorked = monthWorked;
             nome = "Criando arquivo final FACTA";
         }
-
+        
         @Override
         public void run() {
-            FactaView view = new FactaView(totals, monthContracts);
+            FactaView view = new FactaView(totals, monthContracts,saveFolder, monthWorked);
             view.createExcelFile();
         }
         

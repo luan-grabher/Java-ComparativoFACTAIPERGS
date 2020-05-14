@@ -90,7 +90,7 @@ public class FactaView {
         for (Object[] monthContract : monthContracts) {
             countContracts++;
 
-            IpergsLcto ipergs = (IpergsLcto) monthContract[1];
+            IpergsLcto ipergs = monthContract[0];
             Contrato contract = (Contrato) monthContract[1];
 
             XSSFRow row = sheet.createRow(initialRow + countContracts);

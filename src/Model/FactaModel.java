@@ -1,6 +1,5 @@
 package Model;
 
-import Auxiliar.Valor;
 import Model.Entities.FactaLcto;
 import Model.Entities.IpergsLcto;
 import java.io.File;

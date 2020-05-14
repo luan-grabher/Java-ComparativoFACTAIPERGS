@@ -26,14 +26,15 @@ public class FactaModel {
             //Procura contratos no mês para aquele codigo de associado
             Long associado = ipergsLcto.getAssociadoCodigo();
             
-            Optional<Contrato> contractOptional = contracts.stream().filter(
-                    c -> c.getAssociadoCodigo() == associado 
-                    && isCalendarsInTheSameMonth(c.getDataProposta(),monthWork)
+            Optional<Contrato> associadoContractOptional = contracts.stream().filter(
+                    c -> c.getAssociadoCodigo() == associado
             ).findFirst();
             
-            if(contractOptional.isPresent()){
-                Contrato contract = contractOptional.get();
-                monthContracts.add(new Object[]{ipergsLcto, contract});
+            if(associadoContractOptional.isPresent()){
+                Contrato associadoContract = associadoContractOptional.get();
+                if(isCalendarsInTheSameMonth(associadoContract.getDataProposta(),monthWork)){
+                    monthContracts.add(new Object[]{ipergsLcto, associadoContract});            
+                }
             }
         }
         

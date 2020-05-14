@@ -70,7 +70,7 @@ public class UserInputs_Model {
             Integer monthSelected = View.chooseOption("Escolha o mês", "Escolha o mês em que os valores pertencem", monthList);
             
             monthWork = Calendar.getInstance();
-            monthWork.set(Calendar.MONTH, monthSelected+1);
+            monthWork.set(Calendar.MONTH, monthSelected);
             monthWork.set(Calendar.YEAR, Integer.valueOf(yearsList[yearSelected]));
         }
 

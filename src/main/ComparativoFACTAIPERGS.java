@@ -18,8 +18,8 @@ public class ComparativoFACTAIPERGS {
 
     public static void main(String[] args) {
         //Controle Aplicação
-        if (setFilesWithUserInputs()) {
-            //createFinalFiles();
+        if (!setFilesWithUserInputs().hasErrorBreak()) {
+            createFinalFiles();
         }
 
         System.exit(0);
@@ -41,7 +41,7 @@ public class ComparativoFACTAIPERGS {
         ComparativoFACTAIPERGS.monthWork = filesMonth;
     }
     
-    public static boolean setFilesWithUserInputs(){
+    public static Execution setFilesWithUserInputs(){
         UserInputs_Model model = new UserInputs_Model();
         List<Executavel> execs = new ArrayList<>();
         
@@ -62,10 +62,10 @@ public class ComparativoFACTAIPERGS {
         
         System.out.println(monthWork.toString());
         
-        return exec.hasErrorBreak();
+        return exec;
     }
 
-    public static boolean createFinalFiles() {
+    public static Execution createFinalFiles() {
         
         Controller controller = new Controller();
         List<Executavel> execs = new ArrayList<>();
@@ -76,6 +76,7 @@ public class ComparativoFACTAIPERGS {
         execs.add(controller.new setIpergsLctos(arquivoIpergrs));
         execs.add(controller.new setTPSDatabase());
         execs.add(controller.new setListMonthPersons(monthWork));
+        execs.add(controller.new setListTotals());
         execs.add(controller.new createFactaFinalView(localSalvar, monthWork));
         
         Execution exec = new Execution("Comparativo FACTA x IPERGS");
@@ -83,7 +84,7 @@ public class ComparativoFACTAIPERGS {
         exec.rodarExecutaveis();
         exec.finalizar();
         
-        return exec.hasErrorBreak();
+        return exec;
     }
 
 }

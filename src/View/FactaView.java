@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -25,6 +26,12 @@ public class FactaView {
 
     private final Integer initialRow = 2;
     private Integer countContracts = 0;
+
+    private final String cellName = "E";
+    private final String cellValue = "F";
+
+    private final Integer cellNameInt = JExcel.Cell(cellName);
+    private final Integer cellValueInt = JExcel.Cell(cellValue);
 
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
@@ -46,6 +53,8 @@ public class FactaView {
         printTitle();
         printMonthContracts();
         printTotals();
+        
+        XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
         saveFile();
     }
 
@@ -84,82 +93,77 @@ public class FactaView {
             IpergsLcto ipergs = (IpergsLcto) monthContract[1];
             Contrato contract = (Contrato) monthContract[1];
 
-            XSSFRow row = sheet.getRow(initialRow + countContracts);
-            row.getCell(0).setCellValue(countContracts);
-            row.getCell(1).setCellValue(contract.getNumeroProposta());
-            row.getCell(2).setCellValue(ipergs.getMatricula());
-            row.getCell(3).setCellValue(ipergs.getCpf());
-            row.getCell(4).setCellValue(ipergs.getNome());
-            row.getCell(5).setCellValue(contract.getQtdParcelas());
-            row.getCell(6).setCellValue(ipergs.getValor().doubleValue());
-            row.getCell(7).setCellValue(contract.getValorFinanciado().doubleValue());
+            XSSFRow row = sheet.createRow(initialRow + countContracts);
+            row.createCell(0).setCellValue(countContracts);
+            row.createCell(1).setCellValue(contract.getNumeroProposta());
+            row.createCell(2).setCellValue(ipergs.getMatricula());
+            row.createCell(3).setCellValue(ipergs.getCpf());
+            row.createCell(4).setCellValue(ipergs.getNome());
+            row.createCell(5).setCellValue(contract.getQtdParcelas());
+            row.createCell(6).setCellValue(ipergs.getValor().doubleValue());
+            row.createCell(7).setCellValue(contract.getValorFinanciado().doubleValue());
         }
     }
 
     private void printTotals() {
         Integer totalsStartRow = initialRow + countContracts + 2;
-        
-        String cellName = "E";
-        String cellValue = "F";
-        
-        Integer cellNameInt = JExcel.Cell(cellName);
-        Integer cellValueInt = JExcel.Cell(cellValue);
-        
+
         //Defini totais
         //Auxiliares
         //BigDecimal onePercent = new BigDecimal("0.01");
         //BigDecimal halfPercent = new BigDecimal("0.005");
-        
         //Totals
         BigDecimal ipergs = totals.get("ipergs");
         //BigDecimal sefaz = ipergs.multiply(onePercent);
         //BigDecimal ipergsLiquid = ipergs.add(sefaz.negate());
-        
+
         //BigDecimal sinapersHalfPercent = ipergsLiquid.multiply(halfPercent);
         BigDecimal financed = totals.get("financed");
         //BigDecimal salesSinapersPercent = financed.multiply(onePercent);
-        
+
         //Rows
-        Integer 
-        
+        Integer rowIpergs = totalsStartRow + 2;
+        Integer rowSefaz = totalsStartRow + 3;
+        Integer rowIpergsLiquid = totalsStartRow + 4;
+
+        Integer rowPmt = totalsStartRow + 6;
+        Integer rowSales = totalsStartRow + 7;
+        Integer rowSalesOnePercent = totalsStartRow + 8;
+        Integer rowSettingUnrecordedMonthlyFees = totalsStartRow + 9;
+
+        Integer rowSinapers = totalsStartRow + 11;
+        Integer rowFacta = totalsStartRow + 12;
 
         //Define Titulos
-        XSSFRow row = sheet.getRow(totalsStartRow + 1);
-        row.getCell(cellNameInt).setCellValue("Total IPERGS");
-        row.getCell(cellValueInt).setCellValue(ipergs.doubleValue());
-        
-        row = sheet.getRow(totalsStartRow + 1);
-        row.getCell(cellNameInt).setCellValue("Total IPERGS SEFAZ 1%");
-        row.getCell(cellValueInt).setCellFormula("ROUND(" + cellValueInt + (totalsStartRow + 2) + " * 0.01,2)");
-        
-        row = sheet.getRow(totalsStartRow + 1);
-        row.getCell(cellNameInt).setCellValue("Total IPERGS");
-        row.getCell(cellValueInt).setCellValue(totals.get("financed").doubleValue());
-        
-        sheet.getRow(totalsStartRow + 1).getCell(1).setCellValue("Total IPERGS");
-        sheet.getRow(totalsStartRow + 2).getCell(1).setCellValue("VALOR TOTAL IPERGS - 1% SEFAZ");
-        sheet.getRow(totalsStartRow + 3).getCell(1).setCellValue("VALOR LÍQUIDO");
+        printTotal(rowIpergs - 1, "Total IPERGS", ipergs.doubleValue());
+        printTotal(rowSefaz - 1, "Total IPERGS SEFAZ 1%", "ROUND(" + cellValue + rowIpergs + " * 0.01,2)");
+        printTotal(rowIpergsLiquid - 1, "Total IPERGS Liquido", cellValue + rowIpergs + "-" + cellValue + rowSefaz);
 
-        sheet.getRow(totalsStartRow + 5).getCell(1).setCellValue("VALOR PMT SINAPERS 0,5%");
-        sheet.getRow(totalsStartRow + 6).getCell(1).setCellValue("TOTAL VENDAS");
-        sheet.getRow(totalsStartRow + 7).getCell(1).setCellValue("VALOR VENDA 1%");
-        sheet.getRow(totalsStartRow + 8).getCell(1).setCellValue("ACERTO MENSALIDADES NÃO AVERBADAS");
+        printTotal(rowPmt - 1, "PMT SINAPERS 0,5%", "ROUND(" + cellValue + rowIpergsLiquid + " * 0.005,2)");
+        printTotal(rowSales - 1, "Total Venda", financed.doubleValue()); //Financiado
+        printTotal(rowSalesOnePercent - 1, "Valor Venda 1%", "ROUND(" + cellValue + rowSales + " * 0.01,2)");
+        printTotal(rowSettingUnrecordedMonthlyFees - 1, "Acerto Mensalidades Não Averbadas", new Double("0"));
 
-        sheet.getRow(totalsStartRow + 10).getCell(1).setCellValue("TOTAL REPASSE SINAPERS");
-        sheet.getRow(totalsStartRow + 11).getCell(1).setCellValue("TOTAL REPASSE FACTA");
+        printTotal(rowSinapers - 1, "Total SINAPERS", cellValue + rowPmt + "+" + cellValue + rowSalesOnePercent + "+" + cellValue + rowSettingUnrecordedMonthlyFees);
+        printTotal(rowFacta - 1, "Total Repasse FACTA", cellValue + rowIpergsLiquid + "-" + cellValue + rowSinapers);
+    }
 
-        //Define valores
-        sheet.getRow(totalsStartRow + 1).getCell(3).setCellFormula("F" + (totalsStartRow));
-        sheet.getRow(totalsStartRow + 2).getCell(3).setCellFormula("ROUND(D" + (totalsStartRow + 2) + " * 0.01,2)");
-        sheet.getRow(totalsStartRow + 3).getCell(3).setCellFormula("D" + (totalsStartRow + 2) + "-D" + (totalsStartRow + 3));
+    private void printTotal(Integer rowNumber, String nameValue, Double value) {
+        printTotal(rowNumber, nameValue, "", value);
+    }
 
-        sheet.getRow(totalsStartRow + 5).getCell(3).setCellFormula("ROUND(D" + (totalsStartRow + 4) + " * 0.005,2)");
-        sheet.getRow(totalsStartRow + 6).getCell(3).setCellFormula("H" + (totalsStartRow));
-        sheet.getRow(totalsStartRow + 7).getCell(3).setCellFormula("ROUND(D" + (totalsStartRow + 7) + " * 0.01,2)");
-        sheet.getRow(totalsStartRow + 8).getCell(3).setCellValue(0);
+    private void printTotal(Integer rowNumber, String nameValue, String formula) {
+        printTotal(rowNumber, nameValue, formula, null);
+    }
 
-        sheet.getRow(totalsStartRow + 10).getCell(3).setCellFormula("D" + (totalsStartRow + 6) + "+D" + (totalsStartRow + 8) + "+D" + (totalsStartRow + 9));
-        sheet.getRow(totalsStartRow + 11).getCell(3).setCellFormula("D" + (totalsStartRow + 4) + "-D" + (totalsStartRow + 11));
+    private void printTotal(Integer rowNumber, String nameValue, String formula, Double value) {
+        XSSFRow row = sheet.createRow(rowNumber);
+        row.createCell(cellNameInt).setCellValue(nameValue);
+        if (!formula.equals("")) {
+            row.createCell(cellValueInt).setCellFormula(formula);
+        } else {
+            row.createCell(cellValueInt).setCellValue(value);
+        }
     }
 
     private void saveFile() {

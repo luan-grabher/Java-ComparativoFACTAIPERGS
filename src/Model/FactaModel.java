@@ -2,6 +2,7 @@ package Model;
 
 import Model.Entities.FactaLcto;
 import Model.Entities.IpergsLcto;
+import Model.Entities.MonthContract;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,27 +13,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import main.Arquivo;
+import tpsdb.Model.Entities.Associado;
 import tpsdb.Model.Entities.Contrato;
 import tpsdb.Model.Tps_Model;
 
 public class FactaModel {
-    public static List<Object[]> getMonthIPERGSContracts(List<IpergsLcto> ipergsLctos, Calendar monthWork){
-        List<Object[]> monthContracts = new ArrayList<>();
-        List<Contrato> contracts = Tps_Model.getContratos();
+    public static List<MonthContract> getMonthIPERGSContracts(List<IpergsLcto> ipergsLctos, Calendar monthWork){
+        List<MonthContract> monthContracts = new ArrayList<>();
         
         //Percorre todos lançamentos IPERGS
         for (IpergsLcto ipergsLcto : ipergsLctos) {
             //Procura contratos no mês para aquele codigo de associado
-            Long associado = ipergsLcto.getAssociadoCodigo();
+            Long associateCode = ipergsLcto.getAssociadoCodigo();
+            Associado associate =  Tps_Model.getAssociados().stream().filter(a -> a.getCodigoAssociado() == associateCode).findFirst().get();
             
-            Optional<Contrato> associadoContractOptional = contracts.stream().filter(
-                    c -> c.getAssociadoCodigo() == associado
+            Optional<Contrato> associadoContractOptional = Tps_Model.getContratos().stream().filter(
+                    c -> c.getAssociadoCodigo() == associateCode
             ).findFirst();
             
             if(associadoContractOptional.isPresent()){
                 Contrato associadoContract = associadoContractOptional.get();
                 if(isCalendarsInTheSameMonth(associadoContract.getDataProposta(),monthWork)){
-                    monthContracts.add(new Object[]{ipergsLcto, associadoContract});            
+                    MonthContract monthContract = new MonthContract();
+                    monthContract.setAssociate(associate);
+                    monthContract.setContract(associadoContract);
+                    monthContract.setIpergs(ipergsLcto);
+                    
+                    monthContracts.add(monthContract);            
                 }
             }
         }
@@ -91,7 +98,7 @@ public class FactaModel {
         return lctos;
     }
     
-    public static Map<String, BigDecimal> getTotals(List<IpergsLcto> ipergsLctos, List<Object[]> monthContracts){
+    public static Map<String, BigDecimal> getTotals(List<IpergsLcto> ipergsLctos, List<MonthContract> monthContracts){
         Map<String, BigDecimal> totals = new HashMap<>();
         
         
@@ -124,12 +131,12 @@ public class FactaModel {
         return totals;
     }
     
-    private static BigDecimal getTotalFinanced(List<Object[]> monthContracts){
+    private static BigDecimal getTotalFinanced(List<MonthContract> monthContracts){
         //Usando lista de contratos do mês pega totalfinanciado
         BigDecimal total = new BigDecimal(BigInteger.ZERO);
         
-        for (Object[] monthContract : monthContracts) {
-            Contrato contract = (Contrato) monthContract[1];
+        for (MonthContract monthContract : monthContracts) {
+            Contrato contract = monthContract.getContract();
             total.add(contract.getValorFinanciado());
         }
         

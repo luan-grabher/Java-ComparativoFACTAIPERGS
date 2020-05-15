@@ -1,9 +1,9 @@
 package Control;
 
-import Auxiliar.Valor;
 import Entity.Executavel;
 import Model.Entities.FactaLcto;
 import Model.Entities.IpergsLcto;
+import Model.Entities.MonthContract;
 import Model.FactaModel;
 import Model.IpergsModel;
 import View.FactaView;
@@ -17,7 +17,7 @@ import tpsdb.Model.Tps_Model;
 public class Controller {
     private List<FactaLcto> factaLctos;
     private List<IpergsLcto> ipergsLctos;
-    private List<Object[]> monthContracts;
+    private List<MonthContract> monthContracts;
     
     private Map<String, BigDecimal> totals;
     

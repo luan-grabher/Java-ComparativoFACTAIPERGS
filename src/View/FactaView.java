@@ -3,6 +3,7 @@ package View;
 import Auxiliar.Valor;
 import JExcel.JExcel;
 import Model.Entities.IpergsLcto;
+import Model.Entities.MonthContract;
 import java.io.File;
 import java.io.FileInputStream;
 import java.math.BigDecimal;
@@ -19,7 +20,7 @@ import tpsdb.Model.Entities.Contrato;
 public class FactaView {
 
     private final Map<String, BigDecimal> totals;
-    private final List<Object[]> monthContracts;
+    private final List<MonthContract> monthContracts;
     private final Calendar monthWorked;
     private final Calendar lastMonth;
     private final File saveFolder;
@@ -36,7 +37,7 @@ public class FactaView {
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
 
-    public FactaView(Map<String, BigDecimal> totals, List<Object[]> monthContracts, File saveFolder, Calendar monthWorked) {
+    public FactaView(Map<String, BigDecimal> totals, List<MonthContract> monthContracts, File saveFolder, Calendar monthWorked) {
         this.totals = totals;
         this.monthContracts = monthContracts;
         this.saveFolder = saveFolder;
@@ -87,11 +88,11 @@ public class FactaView {
     }
 
     private void printMonthContracts() {
-        for (Object[] monthContract : monthContracts) {
+        for (MonthContract monthContract : monthContracts) {
             countContracts++;
 
-            IpergsLcto ipergs = monthContract[0];
-            Contrato contract = (Contrato) monthContract[1];
+            IpergsLcto ipergs = monthContract.getIpergs();
+            Contrato contract = monthContract.getContract();
 
             XSSFRow row = sheet.createRow(initialRow + countContracts);
             row.createCell(0).setCellValue(countContracts);

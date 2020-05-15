@@ -2,6 +2,7 @@ package View;
 
 import Auxiliar.Valor;
 import JExcel.JExcel;
+import JExcel.JExcelStyles;
 import Model.Entities.IpergsLcto;
 import Model.Entities.MonthContract;
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -54,7 +56,8 @@ public class FactaView {
         printTitle();
         printMonthContracts();
         printTotals();
-        
+        setStyles();
+
         XSSFFormulaEvaluator.evaluateAllFormulaCells(workbook);
         saveFile();
     }
@@ -165,6 +168,33 @@ public class FactaView {
         } else {
             row.createCell(cellValueInt).setCellValue(value);
         }
+    }
+
+    private void setStyles() {
+        for (int i = 0; i <= sheet.getLastRowNum(); i++) {
+            XSSFRow row = sheet.getRow(i);
+
+            //Se tiver valor nas 3 primeiras colunas
+            if ((new Valor(JExcel.getStringCell(row.getCell(0)))).getBigDecimal().compareTo(BigDecimal.ZERO) == 1
+                    && !JExcel.getStringCell(row.getCell(1)).equals("")
+                    && !JExcel.getStringCell(row.getCell(2)).equals("")
+                    ) {
+                JExcelStyles.setStylesInRange(sheet, getMonthContractsStyle(),i , i, 0, 7);
+            }
+        }
+    }
+   
+
+    private XSSFCellStyle getMonthContractsStyle() {
+        XSSFCellStyle style = workbook.createCellStyle();
+
+        return style;
+    }
+
+    private XSSFCellStyle getTotalsStyle() {
+        XSSFCellStyle style = workbook.createCellStyle();
+
+        return style;
     }
 
     private void saveFile() {

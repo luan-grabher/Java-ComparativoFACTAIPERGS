@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import main.Arquivo;
 import tpsdb.Model.Entities.Associado;
@@ -18,42 +19,49 @@ import tpsdb.Model.Entities.Contrato;
 import tpsdb.Model.Tps_Model;
 
 public class FactaModel {
-    public static List<MonthContract> getMonthIPERGSContracts(List<IpergsLcto> ipergsLctos, Calendar monthWork){
+
+    public static List<MonthContract> getMonthIPERGSContracts(List<IpergsLcto> ipergsLctos, Calendar monthWork) {
         List<MonthContract> monthContracts = new ArrayList<>();
-        
+
         //Percorre todos lançamentos IPERGS
         for (IpergsLcto ipergsLcto : ipergsLctos) {
-            //Procura contratos no mês para aquele codigo de associado
-            Long associateCode = ipergsLcto.getAssociadoCodigo();
-            Associado associate =  Tps_Model.getAssociados().stream().filter(a -> a.getCodigoAssociado() == associateCode).findFirst().get();
-            
-            Optional<Contrato> associadoContractOptional = Tps_Model.getContratos().stream().filter(
-                    c -> c.getAssociadoCodigo() == associateCode
-            ).findFirst();
-            
-            if(associadoContractOptional.isPresent()){
-                Contrato associadoContract = associadoContractOptional.get();
-                if(isCalendarsInTheSameMonth(associadoContract.getDataProposta(),monthWork)){
-                    MonthContract monthContract = new MonthContract();
-                    monthContract.setAssociate(associate);
-                    monthContract.setContract(associadoContract);
-                    monthContract.setIpergs(ipergsLcto);
-                    
-                    monthContracts.add(monthContract);            
+            if (ipergsLcto.getValor().compareTo(BigDecimal.ZERO) == 1) {
+                //Procura contratos no mês para aquele codigo de associado
+                Long associateCode = ipergsLcto.getAssociadoCodigo();
+                Optional<Associado> associateOptional = Tps_Model.getAssociados().stream().filter(a -> Objects.equals(a.getCodigoAssociado(), associateCode)).findFirst();
+
+                if (associateOptional.isPresent()) {
+                    Associado associate = associateOptional.get();
+
+                    Optional<Contrato> associadoContractOptional = Tps_Model.getContratos().stream().filter(
+                            c -> c.getAssociadoCodigo() == associateCode
+                    ).findFirst();
+
+                    if (associadoContractOptional.isPresent()) {
+                        Contrato associadoContract = associadoContractOptional.get();
+                        if (isCalendarsInTheSameMonth(associadoContract.getDataProposta(), monthWork)) {
+                            MonthContract monthContract = new MonthContract();
+                            monthContract.setAssociate(associate);
+                            monthContract.setContract(associadoContract);
+                            monthContract.setIpergs(ipergsLcto);
+
+                            monthContracts.add(monthContract);
+                        }
+                    }
                 }
             }
         }
-        
+
         return monthContracts;
     }
-    
-    private static boolean isCalendarsInTheSameMonth(Calendar calOne, Calendar calTwo){
+
+    private static boolean isCalendarsInTheSameMonth(Calendar calOne, Calendar calTwo) {
         return calOne.get(Calendar.YEAR) == calTwo.get(Calendar.YEAR) && calOne.get(Calendar.MONTH) == calTwo.get(Calendar.MONTH);
     }
-    
+
     public static List<FactaLcto> getFileList(File file) {
         List<FactaLcto> lctos = new ArrayList<>();
-        
+
         try {
             Integer minCol = 137;
 
@@ -73,7 +81,7 @@ public class FactaModel {
             for (String linha : linhas) {
                 try {
                     String[] baseLinha = linha.split("");
-                    
+
                     //Se tiver no minimo 160 posicoes
                     if (linha.length() >= minCol) {
                         String nome = linha.substring(mapNome[0], mapNome[1]).replaceAll("[^a-zA-Z ]+", "").trim();
@@ -83,9 +91,9 @@ public class FactaModel {
                         Integer nroParcelas = Integer.valueOf(linha.substring(mapNroParcelas[0], mapNroParcelas[1]).replaceAll("[^0-9]", "").trim());
                         String cpf = linha.substring(mapCpf[0], mapCpf[1]).replaceAll("[^0-9]", "").trim();
                         Long proposta = Long.valueOf(linha.substring(mapProposta[0]).replaceAll("[^0-9]", "").trim());
-                        
+
                         if (!nome.equals("") & matricula > 1000000 & nroParcelas > 0 & !cpf.equals("") & proposta > 0) {
-                            lctos.add(new FactaLcto(matricula, nome, cpf, valorFinanciado, valorParcela,nroParcelas, proposta));
+                            lctos.add(new FactaLcto(matricula, nome, cpf, valorFinanciado, valorParcela, nroParcelas, proposta));
                         }
                     }
                 } catch (Exception e) {
@@ -94,52 +102,48 @@ public class FactaModel {
 
         } catch (Exception e) {
         }
-        
+
         return lctos;
     }
-    
-    public static Map<String, BigDecimal> getTotals(List<IpergsLcto> ipergsLctos, List<MonthContract> monthContracts){
+
+    public static Map<String, BigDecimal> getTotals(List<IpergsLcto> ipergsLctos, List<MonthContract> monthContracts) {
         Map<String, BigDecimal> totals = new HashMap<>();
-        
-        
+
         BigDecimal totalIpergs = new BigDecimal(IpergsModel.getTotal(ipergsLctos).toString());
-        
+
         //Auxiliares
         //BigDecimal onePercent = new BigDecimal("0.01");
         //BigDecimal halfPercent = new BigDecimal("0.005");
-        
         //Totals
         //BigDecimal sefaz = totalIpergs.multiply(onePercent);
         //BigDecimal ipergsLiquid = totalIpergs.add(sefaz.negate());
-        
         //BigDecimal sinapersHalfPercent = ipergsLiquid.multiply(halfPercent);
         BigDecimal totalFinanced = getTotalFinanced(monthContracts);
         //BigDecimal salesSinapersPercent = totalFinanced.multiply(onePercent);
-        
-        
+
         //Add to map
         totals.put("ipergs", totalIpergs);
         //totals.add(new Valor(totalIpergs,"ipergs"));
         //totals.add(new Valor(sefaz,"Total IPERGS SEFAZ 1%"));
         //totals.add(new Valor(ipergsLiquid,"Total IPERGS Liquido"));
-        
+
         //totals.add(new Valor(sinapersHalfPercent,"PMT SINAPERS 0,5%"));
         //totals.add(new Valor(totalFinanced,"financed")); //Valor total financiado no mÊs
         totals.put("financed", totalFinanced);
         //totals.add(new Valor(salesSinapersPercent,"Valor Venda 1%")); //repasse sinapers
-        
+
         return totals;
     }
-    
-    private static BigDecimal getTotalFinanced(List<MonthContract> monthContracts){
+
+    private static BigDecimal getTotalFinanced(List<MonthContract> monthContracts) {
         //Usando lista de contratos do mês pega totalfinanciado
         BigDecimal total = new BigDecimal(BigInteger.ZERO);
-        
+
         for (MonthContract monthContract : monthContracts) {
             Contrato contract = monthContract.getContract();
             total.add(contract.getValorFinanciado());
         }
-        
+
         return total;
     }
 }

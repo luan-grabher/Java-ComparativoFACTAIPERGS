@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,7 @@ public class FactaModel {
                             monthContract.setAssociate(associate);
                             monthContract.setContract(associadoContract);
                             monthContract.setIpergs(ipergsLcto);
+                            monthContract.setName(ipergsLcto.getNome());
 
                             monthContracts.add(monthContract);
                         }
@@ -51,6 +53,9 @@ public class FactaModel {
                 }
             }
         }
+        
+        //Ordem Alfabética
+        monthContracts.sort(Comparator.comparing(MonthContract::getName));
 
         return monthContracts;
     }
@@ -141,7 +146,7 @@ public class FactaModel {
 
         for (MonthContract monthContract : monthContracts) {
             Contrato contract = monthContract.getContract();
-            total.add(contract.getValorFinanciado());
+            total = total.add(contract.getValorFinanciado());
         }
 
         return total;

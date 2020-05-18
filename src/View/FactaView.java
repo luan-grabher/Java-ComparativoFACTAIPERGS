@@ -12,11 +12,19 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
 import tpsdb.Model.Entities.Contrato;
 
 public class FactaView {
@@ -30,11 +38,11 @@ public class FactaView {
     private final Integer initialRow = 2;
     private Integer countContracts = 0;
 
-    private final String cellName = "E";
-    private final String cellValue = "F";
+    private final String titleCellName = "E";
+    private final String titleCellValue = "F";
 
-    private final Integer cellNameInt = JExcel.Cell(cellName);
-    private final Integer cellValueInt = JExcel.Cell(cellValue);
+    private final Integer titleCellNameInt = JExcel.Cell(titleCellName);
+    private final Integer titleCellValueInt = JExcel.Cell(titleCellValue);
 
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
@@ -107,6 +115,13 @@ public class FactaView {
             row.createCell(6).setCellValue(ipergs.getValor().doubleValue());
             row.createCell(7).setCellValue(contract.getValorFinanciado().doubleValue());
         }
+        
+        //imprime totalizador
+        XSSFRow rowTotalizer = sheet.createRow(initialRow + countContracts + 1);
+        XSSFCell cellTotalizer =  rowTotalizer.createCell(7);
+        cellTotalizer.setCellFormula("SUM(H" + (initialRow + 1) + ":H" + (initialRow + countContracts + 1) + ")");
+        cellTotalizer.setCellStyle(getStyle_Value());
+        cellTotalizer.getCellStyle().setFont(getFont_Bold());
     }
 
     private void printTotals() {
@@ -140,16 +155,16 @@ public class FactaView {
 
         //Define Titulos
         printTotal(rowIpergs - 1, "Total IPERGS", ipergs.doubleValue());
-        printTotal(rowSefaz - 1, "Total IPERGS SEFAZ 1%", "ROUND(" + cellValue + rowIpergs + " * 0.01,2)");
-        printTotal(rowIpergsLiquid - 1, "Total IPERGS Liquido", cellValue + rowIpergs + "-" + cellValue + rowSefaz);
+        printTotal(rowSefaz - 1, "Total IPERGS SEFAZ 1%", "ROUND(" + titleCellValue + rowIpergs + " * 0.01,2)");
+        printTotal(rowIpergsLiquid - 1, "Total IPERGS Liquido", titleCellValue + rowIpergs + "-" + titleCellValue + rowSefaz);
 
-        printTotal(rowPmt - 1, "PMT SINAPERS 0,5%", "ROUND(" + cellValue + rowIpergsLiquid + " * 0.005,2)");
+        printTotal(rowPmt - 1, "PMT SINAPERS 0,5%", "ROUND(" + titleCellValue + rowIpergsLiquid + " * 0.005,2)");
         printTotal(rowSales - 1, "Total Venda", financed.doubleValue()); //Financiado
-        printTotal(rowSalesOnePercent - 1, "Valor Venda 1%", "ROUND(" + cellValue + rowSales + " * 0.01,2)");
+        printTotal(rowSalesOnePercent - 1, "Valor Venda 1%", "ROUND(" + titleCellValue + rowSales + " * 0.01,2)");
         printTotal(rowSettingUnrecordedMonthlyFees - 1, "Acerto Mensalidades Não Averbadas", new Double("0"));
 
-        printTotal(rowSinapers - 1, "Total SINAPERS", cellValue + rowPmt + "+" + cellValue + rowSalesOnePercent + "+" + cellValue + rowSettingUnrecordedMonthlyFees);
-        printTotal(rowFacta - 1, "Total Repasse FACTA", cellValue + rowIpergsLiquid + "-" + cellValue + rowSinapers);
+        printTotal(rowSinapers - 1, "Total SINAPERS", titleCellValue + rowPmt + "+" + titleCellValue + rowSalesOnePercent + "+" + titleCellValue + rowSettingUnrecordedMonthlyFees);
+        printTotal(rowFacta - 1, "Total Repasse FACTA", titleCellValue + rowIpergsLiquid + "-" + titleCellValue + rowSinapers);
     }
 
     private void printTotal(Integer rowNumber, String nameValue, Double value) {
@@ -162,11 +177,11 @@ public class FactaView {
 
     private void printTotal(Integer rowNumber, String nameValue, String formula, Double value) {
         XSSFRow row = sheet.createRow(rowNumber);
-        row.createCell(cellNameInt).setCellValue(nameValue);
+        row.createCell(titleCellNameInt).setCellValue(nameValue);
         if (!formula.equals("")) {
-            row.createCell(cellValueInt).setCellFormula(formula);
+            row.createCell(titleCellValueInt).setCellFormula(formula);
         } else {
-            row.createCell(cellValueInt).setCellValue(value);
+            row.createCell(titleCellValueInt).setCellValue(value);
         }
     }
 
@@ -174,27 +189,43 @@ public class FactaView {
         for (int i = 0; i <= sheet.getLastRowNum(); i++) {
             XSSFRow row = sheet.getRow(i);
 
-            //Se tiver valor nas 3 primeiras colunas
-            if ((new Valor(JExcel.getStringCell(row.getCell(0)))).getBigDecimal().compareTo(BigDecimal.ZERO) == 1
-                    && !JExcel.getStringCell(row.getCell(1)).equals("")
-                    && !JExcel.getStringCell(row.getCell(2)).equals("")
-                    ) {
-                JExcelStyles.setStylesInRange(sheet, getMonthContractsStyle(),i , i, 0, 7);
+            if (row != null) {
+                //Se tiver valor nas 3 primeiras colunas
+                if ((new Valor(JExcel.getStringCell(row.getCell(0)))).getBigDecimal().compareTo(BigDecimal.ZERO) == 1
+                        && !JExcel.getStringCell(row.getCell(1)).equals("")
+                        && !JExcel.getStringCell(row.getCell(2)).equals("")) {
+                    
+                    JExcelStyles.setStylesInRange(sheet, getStyle_Default(), i, i, 0, 5);
+                    JExcelStyles.setStylesInRange(sheet, getStyle_Value(), i, i, 6, 7);
+                    
+                } else if (!JExcel.getStringCell(row.getCell(titleCellNameInt)).equals("")
+                        && (!JExcel.getStringCell(row.getCell(titleCellValueInt)).replaceAll("[^0-9]", "").equals("")
+                        || row.getCell(titleCellValueInt).getCellType() == CellType.FORMULA)) {
+                    
+                    row.getCell(titleCellNameInt).setCellStyle(getStyle_Default());
+                    row.getCell(titleCellValueInt).setCellStyle(getStyle_Value());
+                }
             }
         }
     }
-   
-
-    private XSSFCellStyle getMonthContractsStyle() {
-        XSSFCellStyle style = workbook.createCellStyle();
+    
+    private XSSFCellStyle getStyle_Value() {
+        XSSFCellStyle style = getStyle_Default();
+        style.setDataFormat(8);//8 is the data format to money
 
         return style;
     }
 
-    private XSSFCellStyle getTotalsStyle() {
+    private XSSFCellStyle getStyle_Default() {
         XSSFCellStyle style = workbook.createCellStyle();
-
+        JExcelStyles.setCellBorders(style);
         return style;
+    }
+    
+    private XSSFFont getFont_Bold(){
+        XSSFFont font = workbook.createFont();
+        font.setBold(true);
+        return font;
     }
 
     private void saveFile() {

@@ -4,6 +4,7 @@ import tpsdb.Model.Entities.Associado;
 import tpsdb.Model.Entities.Contrato;
 
 public class MonthContract {
+    private String name;
     private IpergsLcto ipergs;
     private Contrato contract;
     private Associado associate;
@@ -11,6 +12,13 @@ public class MonthContract {
     public MonthContract() {
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public IpergsLcto getIpergs() {
         return ipergs;

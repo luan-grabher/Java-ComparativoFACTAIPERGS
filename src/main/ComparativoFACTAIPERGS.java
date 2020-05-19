@@ -11,9 +11,9 @@ import java.util.List;
 
 public class ComparativoFACTAIPERGS {
 
-    private static File arquivoFacta;
-    private static File arquivoIpergrs;
-    private static File localSalvar;
+    private static File factaFile;
+    private static File ipergsFile;
+    private static File saveFolder;
     private static Calendar monthWork;
 
     public static void main(String[] args) {
@@ -26,15 +26,15 @@ public class ComparativoFACTAIPERGS {
     }
 
     public static void setArquivoFacta(File arquivoFacta) {
-        ComparativoFACTAIPERGS.arquivoFacta = arquivoFacta;
+        ComparativoFACTAIPERGS.factaFile = arquivoFacta;
     }
 
     public static void setArquivoIpergrs(File arquivoIpergrs) {
-        ComparativoFACTAIPERGS.arquivoIpergrs = arquivoIpergrs;
+        ComparativoFACTAIPERGS.ipergsFile = arquivoIpergrs;
     }
 
     public static void setLocalSalvar(File localSalvar) {
-        ComparativoFACTAIPERGS.localSalvar = localSalvar;
+        ComparativoFACTAIPERGS.saveFolder = localSalvar;
     }
 
     public static void setFilesMonth(Calendar filesMonth) {
@@ -55,9 +55,9 @@ public class ComparativoFACTAIPERGS {
         exec.finalizar();
         
         //Define arquivos
-        arquivoFacta = model.getFactaFile();
-        arquivoIpergrs = model.getIpergsFile();
-        localSalvar = model.getSaveFolderFile();
+        factaFile = model.getFactaFile();
+        ipergsFile = model.getIpergsFile();
+        saveFolder = model.getSaveFolderFile();
         monthWork = model.getMonthWork();
         
         System.out.println(monthWork.toString());
@@ -70,14 +70,16 @@ public class ComparativoFACTAIPERGS {
         Controller controller = new Controller();
         List<Executavel> execs = new ArrayList<>();
         
-        execs.add(controller.new setFactaLctos(arquivoFacta));
+        execs.add(controller.new setFactaLctos(factaFile));
         execs.add(controller.new setAssociados());
         execs.add(controller.new setContratos());
-        execs.add(controller.new setIpergsLctos(arquivoIpergrs));
+        execs.add(controller.new setIpergsLctos(ipergsFile));
         execs.add(controller.new setTPSDatabase());
         execs.add(controller.new setListMonthPersons(monthWork));
         execs.add(controller.new setListTotals());
-        execs.add(controller.new createFactaFinalView(localSalvar, monthWork));
+        execs.add(controller.new createFactaFinalView(saveFolder, monthWork));
+        execs.add(controller.new createWarnings(monthWork));
+        execs.add(controller.new createWarningsView(saveFolder));
         
         Execution exec = new Execution("Comparativo FACTA x IPERGS");
         exec.setExecutaveis(execs);

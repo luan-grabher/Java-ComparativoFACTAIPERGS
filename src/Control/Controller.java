@@ -160,6 +160,7 @@ public class Controller {
             WarningsModel model = new WarningsModel(ipergsLctos, monthWorked);
             model.setIpergsWarnings();
             model.setContractsWarnings();
+            warnings = model.getWarnings();
         }
 
     }

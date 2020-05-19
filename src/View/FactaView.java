@@ -12,19 +12,18 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.DataFormat;
-import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.Color;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.apache.poi.xssf.usermodel.extensions.XSSFCellFill;
 import tpsdb.Model.Entities.Contrato;
 
 public class FactaView {
@@ -204,6 +203,11 @@ public class FactaView {
                     
                     row.getCell(titleCellNameInt).setCellStyle(getStyle_Default());
                     row.getCell(titleCellValueInt).setCellStyle(getStyle_Value());
+                    
+                    if(row.getCell(titleCellNameInt).getStringCellValue().equals("Total Repasse FACTA")){
+                        row.getCell(titleCellNameInt).getCellStyle().setFont(getFont_Bold());
+                        row.getCell(titleCellValueInt).getCellStyle().setFont(getFont_Bold());
+                    }
                 }
             }
         }
@@ -225,6 +229,12 @@ public class FactaView {
     private XSSFFont getFont_Bold(){
         XSSFFont font = workbook.createFont();
         font.setBold(true);
+        return font;
+    }
+    
+    private XSSFFont getFont_Red(){
+        XSSFFont font = workbook.createFont();
+        font.setColor(IndexedColors.BLACK.index);
         return font;
     }
 

@@ -135,4 +135,22 @@ public class Controller {
         }
         
     }
+    
+    public class createWarnings extends Executavel{
+        private final File saveFolder;
+        private final Calendar monthWorked;
+
+        public createWarnings(File saveFolder, Calendar monthWorked) {
+            this.saveFolder = saveFolder;
+            this.monthWorked = monthWorked;
+            nome = "Criando arquivo de avisos e erros.";
+        }
+        
+        @Override
+        public void run() {
+            
+        }
+        
+    }
+    
 }

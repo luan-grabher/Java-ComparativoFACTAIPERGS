@@ -36,7 +36,7 @@ public class WarningsModel {
             String warn = "Matricula do arquivo do IPERGS '" + ipergsLcto.getMatricula() + "' ";
             //Verifica se encontrou associado
             if(ipergsLcto.getNome().equals("")){
-                warnings.add(warn + "não encontrada no sistema. A observação no arquivo é: " + ipergsLcto.getObs());
+                warnings.add(warn + " não encontrada no sistema. A observação no arquivo é: " + ipergsLcto.getObs());
             }else{
                 warn += " com associado de nome '" + ipergsLcto.getNome() + "' ";
                 
@@ -44,11 +44,11 @@ public class WarningsModel {
                 List<Contrato> associateContracts = contracts.stream().filter(c -> c.getAssociadoCodigo() == ipergsLcto.getAssociadoCodigo()).collect(Collectors.toList());
                 
                 if(associateContracts.isEmpty()){
-                    warnings.add(warn + "não possui contratos no sistema em nenhuma data.");
+                    warnings.add(warn + " não possui contratos no sistema em nenhuma data.");
                 }else{
                     //Avisa se tiver mais de um contrato
                     if(associateContracts.size() > 1){
-                        warnings.add(warn + "possui mais de 1 contrato no sistema. Ao total são " + associateContracts.size());
+                        warnings.add(warn + " possui mais de 1 contrato no sistema. Ao total são " + associateContracts.size());
                     }
                     
                     //Percorre contratos para buscar um contrato de meses futuros
@@ -70,7 +70,7 @@ public class WarningsModel {
                 List<IpergsLcto> listIpergs = ipergsLctos.stream().filter(i -> i.getAssociadoCodigo() == contract.getAssociadoCodigo()).collect(Collectors.toList());
                 
                 if(!ipergsLctos.stream().anyMatch(i -> i.getAssociadoCodigo() == contract.getAssociadoCodigo())){
-                    warnings.add(warn + "possui a data da proposta no mês " + month.get(Calendar.MONTH) + " e não aparece no arquivo do IPERGS.");
+                    warnings.add(warn + " possui a data da proposta no mês " + (month.get(Calendar.MONTH)+1) + " e não aparece no arquivo do IPERGS.");
                 }
             }
         }

@@ -22,7 +22,7 @@ public class Testes {
         File ipe = new File(folder.getAbsolutePath() + "\\ipe.txt");
         
         Integer year = 2020;
-        Integer month = 0;
+        Integer month = 2;
         
         Calendar filesMonth = Calendar.getInstance();
         filesMonth.set(Calendar.YEAR, year);

@@ -4,6 +4,7 @@ import Entity.Executavel;
 import Model.Entities.FactaLcto;
 import Model.Entities.IpergsLcto;
 import Model.Entities.MonthContract;
+import Model.Entities.WarningOrError;
 import Model.FactaModel;
 import Model.IpergsModel;
 import Model.WarningsModel;
@@ -22,7 +23,7 @@ public class Controller {
     private List<IpergsLcto> ipergsLctos;
     private List<MonthContract> monthContracts;
 
-    private List<String> warnings;
+    private List<WarningOrError> warnings;
 
     private Map<String, BigDecimal> totals;
 
@@ -164,8 +165,8 @@ public class Controller {
         public void run() {
             StringBuilder sb = new StringBuilder();
 
-            for (String warning : warnings) {
-                sb.append(warning);
+            for (WarningOrError warning : warnings) {
+                sb.append(warning.getDescription());
                 sb.append("\n\n");
             }
 

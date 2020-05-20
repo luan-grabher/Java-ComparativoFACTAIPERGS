@@ -2,16 +2,10 @@ package Model;
 
 import Model.Entities.IpergsLcto;
 import Model.Entities.LctoTxt;
-import Model.Entities.MonthContract;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import tpsdb.Model.Entities.Associado;
-import tpsdb.Model.Entities.Contrato;
-import tpsdb.Model.Tps_Model;
 
 public class IpergsModel {
     public static List<IpergsLcto> getFileList(File file) {

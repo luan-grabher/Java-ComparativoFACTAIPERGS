@@ -12,6 +12,7 @@ import View.FactaView;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import main.Arquivo;
@@ -39,6 +40,7 @@ public class Controller {
         @Override
         public void run() {
             factaLctos = FactaModel.getFileList(file);
+            factaLctos.sort(Comparator.comparing(FactaLcto::getNome));
         }
 
     }
@@ -55,6 +57,7 @@ public class Controller {
         @Override
         public void run() {
             ipergsLctos = IpergsModel.getFileList(file);
+            ipergsLctos.sort(Comparator.comparing(IpergsLcto::getNome));
         }
 
     }
@@ -96,6 +99,7 @@ public class Controller {
         @Override
         public void run() {
             monthContracts = FactaModel.getMonthIPERGSContracts(ipergsLctos, monthWork);
+            monthContracts.sort(Comparator.comparing(MonthContract::getName));
         }
 
     }

@@ -83,20 +83,6 @@ public class Controller {
         }
     }
 
-    public class setTPSDatabase extends Executavel {
-
-        public setTPSDatabase() {
-            nome = "Buscando dados do banco de dados...";
-        }
-
-        @Override
-        public void run() {
-            Tps_Model.setAssociados();
-            Tps_Model.setContratos();
-        }
-
-    }
-
     public class setListMonthPersons extends Executavel {
 
         Calendar monthWork;

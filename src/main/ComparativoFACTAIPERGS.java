@@ -74,7 +74,6 @@ public class ComparativoFACTAIPERGS {
         execs.add(controller.new setAssociados());
         execs.add(controller.new setContratos());
         execs.add(controller.new setIpergsLctos(ipergsFile));
-        execs.add(controller.new setTPSDatabase());
         execs.add(controller.new setListMonthPersons(monthWork));
         execs.add(controller.new setListTotals());
         execs.add(controller.new createFactaFinalView(saveFolder, monthWork));

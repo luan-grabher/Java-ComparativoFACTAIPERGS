@@ -3,6 +3,7 @@ package Model;
 import Model.Entities.IpergsLcto;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 import tpsdb.Model.Entities.Contrato;
@@ -31,6 +32,12 @@ public class WarningsModel {
     }
     
     public void setIpergsWarnings(){
+        //Para verificações
+        //Ordena contratos
+        contracts.sort(Comparator.comparing(Contrato::getNumeroProposta));
+        
+        
+        
         //Percorre lançamentos
         for (IpergsLcto ipergsLcto : ipergsLctos) {
             String warn = "Matricula do arquivo do IPERGS '" + ipergsLcto.getMatricula() + "' ";

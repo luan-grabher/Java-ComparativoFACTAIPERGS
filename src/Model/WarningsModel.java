@@ -32,11 +32,8 @@ public class WarningsModel {
     }
     
     public void setIpergsWarnings(){
-        //Para verificações
-        //Ordena contratos
-        contracts.sort(Comparator.comparing(Contrato::getNumeroProposta));
-        
-        
+        //Ordena contratos para facilitar verificações
+        //contracts.sort(Comparator.comparing(Contrato::getNumeroProposta));
         
         //Percorre lançamentos
         for (IpergsLcto ipergsLcto : ipergsLctos) {

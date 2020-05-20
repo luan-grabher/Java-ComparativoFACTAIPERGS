@@ -70,6 +70,7 @@ public class ComparativoFACTAIPERGS {
         Controller controller = new Controller();
         List<Executavel> execs = new ArrayList<>();
         
+        execs.add(controller.new setMonthWorked(monthWork));
         execs.add(controller.new setFactaLctos(factaFile));
         execs.add(controller.new setAssociados());
         execs.add(controller.new setContratos());

@@ -73,7 +73,7 @@ public class WarningsModel {
                     //Avisa se tiver mais de um contrato
                     if (associateContracts.size() > 1) {
                         WarningOrError error = new WarningOrError();
-                        error.setType("Erro");
+                        error.setType("Aviso");
                         error.setLocate(locate);
                         error.setIdentificator(identificator);
                         error.setDescription("O Associado possui mais de 1 contrato no sistema");
@@ -86,7 +86,7 @@ public class WarningsModel {
                     for (Contrato associateContract : associateContracts) {
                         if (associateContract.getDataProposta().after(nextMonth)) {
                             WarningOrError error = new WarningOrError();
-                            error.setType("Erro");
+                            error.setType("Aviso");
                             error.setLocate(locate);
                             error.setIdentificator(identificator);
                             error.setDescription("O Associado possui um contrato futuro");

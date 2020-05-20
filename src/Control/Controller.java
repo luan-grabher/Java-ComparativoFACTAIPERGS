@@ -9,6 +9,7 @@ import Model.FactaModel;
 import Model.IpergsModel;
 import Model.WarningsModel;
 import View.FactaView;
+import View.WarningsView;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.Calendar;
@@ -19,7 +20,8 @@ import main.Arquivo;
 import tpsdb.Model.Tps_Model;
 
 public class Controller {
-
+    private Calendar monthWorked;
+    
     private List<FactaLcto> factaLctos;
     private List<IpergsLcto> ipergsLctos;
     private List<MonthContract> monthContracts;
@@ -28,6 +30,20 @@ public class Controller {
 
     private Map<String, BigDecimal> totals;
 
+    public class setMonthWorked extends Executavel{
+        private Calendar month;
+        public setMonthWorked(Calendar month) {
+            this.month = month;
+            nome = "Definindo mês dos arquivos";
+        }
+
+        @Override
+        public void run() {
+            monthWorked = month;
+        }
+        
+    }
+    
     public class setFactaLctos extends Executavel {
 
         File file;
@@ -167,14 +183,8 @@ public class Controller {
 
         @Override
         public void run() {
-            StringBuilder sb = new StringBuilder();
-
-            for (WarningOrError warning : warnings) {
-                sb.append(warning.getDescription());
-                sb.append("\n\n");
-            }
-
-            Arquivo.salvar(saveFolder.getAbsolutePath(), "Avisos e Erros.txt",sb.toString());
+            WarningsView view = new WarningsView(saveFolder, warnings, monthWorked);
+            view.createExcelFile();
         }
 
     }

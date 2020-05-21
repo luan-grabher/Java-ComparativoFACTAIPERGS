@@ -1,13 +1,13 @@
 package Model.Entities;
 
-import tpsdb.Model.Entities.Associado;
-import tpsdb.Model.Entities.Contrato;
+import tpsdb.Model.Entities.Associate;
+import tpsdb.Model.Entities.Contract;
 
 public class MonthContract {
     private String name;
     private IpergsLcto ipergs;
-    private Contrato contract;
-    private Associado associate;
+    private Contract contract;
+    private Associate associate;
 
     public MonthContract() {
     }
@@ -28,19 +28,19 @@ public class MonthContract {
         this.ipergs = ipergs;
     }
 
-    public Contrato getContract() {
+    public Contract getContract() {
         return contract;
     }
 
-    public void setContract(Contrato contract) {
+    public void setContract(Contract contract) {
         this.contract = contract;
     }
 
-    public Associado getAssociate() {
+    public Associate getAssociate() {
         return associate;
     }
 
-    public void setAssociate(Associado associate) {
+    public void setAssociate(Associate associate) {
         this.associate = associate;
     }
     

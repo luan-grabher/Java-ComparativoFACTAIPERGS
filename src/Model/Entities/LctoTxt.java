@@ -1,6 +1,6 @@
 package Model.Entities;
 
-import tpsdb.Model.Entities.Associado;
+import tpsdb.Model.Entities.Associate;
 import tpsdb.Model.Tps_Model;
 
 
@@ -45,7 +45,7 @@ public final class LctoTxt {
     }
 	
     public void setAssociado(){
-       Associado a = Tps_Model.getAssociado((long) matricula_estado, (long) matricula_vinculo, (long) matricula_pensionista);
+       Associate a = Tps_Model.getAssociate((long) matricula_estado, (long) matricula_vinculo, (long) matricula_pensionista);
        nomeAssociado = a.getNome();
        situacao = a.getSituacao();
        cpfAssociado = a.getCpf();

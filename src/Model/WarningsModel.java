@@ -9,20 +9,20 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
-import tpsdb.Model.Entities.Contrato;
+import tpsdb.Model.Entities.Contract;
 import tpsdb.Model.Tps_Model;
 
 public class WarningsModel {
 
     private final List<IpergsLcto> ipergsLctos;
-    private final List<Contrato> contracts;
+    private final List<Contract> contracts;
     private List<WarningOrError> warnings = new ArrayList<>();
     private final Calendar month;
     private final Calendar nextMonth;
 
     public WarningsModel(List<IpergsLcto> ipergsLctos, Calendar month) {
         this.ipergsLctos = ipergsLctos;
-        this.contracts = Tps_Model.getContratos();
+        this.contracts = Tps_Model.getContracts();
         this.month = month;
 
         nextMonth = Calendar.getInstance();
@@ -59,7 +59,7 @@ public class WarningsModel {
                 identificator += " - " + ipergsLcto.getNome();
 
                 //Procura contratos do associado
-                List<Contrato> associateContracts = contracts.stream().filter(c -> c.getAssociadoCodigo() == ipergsLcto.getAssociadoCodigo()).collect(Collectors.toList());
+                List<Contract> associateContracts = contracts.stream().filter(c -> c.getAssociadoCodigo() == ipergsLcto.getAssociadoCodigo()).collect(Collectors.toList());
 
                 if (associateContracts.isEmpty()) {
                     WarningOrError error = new WarningOrError();
@@ -83,7 +83,7 @@ public class WarningsModel {
                     }
 
                     //Percorre contratos para buscar um contrato de meses futuros
-                    for (Contrato associateContract : associateContracts) {
+                    for (Contract associateContract : associateContracts) {
                         if (associateContract.getDataProposta().after(nextMonth)) {
                             WarningOrError error = new WarningOrError();
                             error.setType("Aviso");
@@ -102,7 +102,7 @@ public class WarningsModel {
 
     public void setContractsWarnings() {
         String locate = "Contratos";
-        for (Contrato contract : contracts) {
+        for (Contract contract : contracts) {
             String identificator = "Contrato " + contract.getNumeroProposta();
 
             Calendar date = contract.getDataProposta();

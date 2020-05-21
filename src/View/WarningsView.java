@@ -14,7 +14,7 @@ import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import tpsdb.Model.Entities.Contrato;
+import tpsdb.Model.Entities.Contract;
 
 public class WarningsView {
 

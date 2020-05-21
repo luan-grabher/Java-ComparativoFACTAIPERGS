@@ -86,7 +86,7 @@ public class Controller {
 
         @Override
         public void run() {
-            Tps_Model.setAssociados();
+            Tps_Model.serAssociates();
         }
 
     }
@@ -99,7 +99,7 @@ public class Controller {
 
         @Override
         public void run() {
-            Tps_Model.setContratos();
+            Tps_Model.setContracts();
         }
     }
 

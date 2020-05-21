@@ -15,8 +15,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import main.Arquivo;
-import tpsdb.Model.Entities.Associado;
-import tpsdb.Model.Entities.Contrato;
+import tpsdb.Model.Entities.Associate;
+import tpsdb.Model.Entities.Contract;
 import tpsdb.Model.Tps_Model;
 
 public class FactaModel {
@@ -29,17 +29,17 @@ public class FactaModel {
             if (ipergsLcto.getValor().compareTo(BigDecimal.ZERO) == 1) {
                 //Procura contratos no mês para aquele codigo de associado
                 Long associateCode = ipergsLcto.getAssociadoCodigo();
-                Optional<Associado> associateOptional = Tps_Model.getAssociados().stream().filter(a -> Objects.equals(a.getCodigoAssociado(), associateCode)).findFirst();
+                Optional<Associate> associateOptional = Tps_Model.getAssociates().stream().filter(a -> Objects.equals(a.getCodigoAssociado(), associateCode)).findFirst();
 
                 if (associateOptional.isPresent()) {
-                    Associado associate = associateOptional.get();
+                    Associate associate = associateOptional.get();
 
-                    Optional<Contrato> associadoContractOptional = Tps_Model.getContratos().stream().filter(
+                    Optional<Contract> associadoContractOptional = Tps_Model.getContracts().stream().filter(
                             c -> c.getAssociadoCodigo() == associateCode
                     ).findFirst();
 
                     if (associadoContractOptional.isPresent()) {
-                        Contrato associadoContract = associadoContractOptional.get();
+                        Contract associadoContract = associadoContractOptional.get();
                         if (isCalendarsInTheSameMonth(associadoContract.getDataProposta(), monthWork)) {
                             MonthContract monthContract = new MonthContract();
                             monthContract.setAssociate(associate);
@@ -145,7 +145,7 @@ public class FactaModel {
         BigDecimal total = new BigDecimal(BigInteger.ZERO);
 
         for (MonthContract monthContract : monthContracts) {
-            Contrato contract = monthContract.getContract();
+            Contract contract = monthContract.getContract();
             total = total.add(contract.getValorFinanciado());
         }
 

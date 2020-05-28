@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.stream.Stream;
 import tpsdb.Model.Entities.Associate;
 import tpsdb.Model.Entities.Contract;
 import tpsdb.Model.Tps_Model;
@@ -26,7 +27,12 @@ public class FactaModel {
 
         //Percorre todos lançamentos IPERGS
         for (IpergsLcto ipergsLcto : ipergsLctos) {
+            //Valor maior que 0
             if (ipergsLcto.getValor().compareTo(BigDecimal.ZERO) == 1) {
+                if (ipergsLcto.getMatricula() == Long.valueOf("39815927802")) {
+                    System.out.println("Aqui");
+                }
+
                 //Procura contratos no mês para aquele codigo de associado
                 Long associateCode = ipergsLcto.getAssociadoCodigo();
                 Optional<Associate> associateOptional = Tps_Model.getAssociates().stream().filter(a -> Objects.equals(a.getCodigoAssociado(), associateCode)).findFirst();
@@ -34,30 +40,31 @@ public class FactaModel {
                 if (associateOptional.isPresent()) {
                     Associate associate = associateOptional.get();
 
-                    Optional<Contract> associadoContractOptional = Tps_Model.getContracts().stream().filter(
-                            c -> c.getAssociadoCodigo() == associateCode
-                    ).findFirst();
+                    getAssociateContractsStream(associateCode, monthWork).forEach(associadoContract -> {
+                        MonthContract monthContract = new MonthContract();
+                        monthContract.setAssociate(associate);
+                        monthContract.setContract(associadoContract);
+                        monthContract.setIpergs(ipergsLcto);
+                        monthContract.setName(ipergsLcto.getNome());
 
-                    if (associadoContractOptional.isPresent()) {
-                        Contract associadoContract = associadoContractOptional.get();
-                        if (isCalendarsInTheSameMonth(associadoContract.getDataProposta(), monthWork)) {
-                            MonthContract monthContract = new MonthContract();
-                            monthContract.setAssociate(associate);
-                            monthContract.setContract(associadoContract);
-                            monthContract.setIpergs(ipergsLcto);
-                            monthContract.setName(ipergsLcto.getNome());
+                        monthContracts.add(monthContract);
 
-                            monthContracts.add(monthContract);
-                        }
-                    }
+                    });
                 }
             }
         }
-        
+
         //Ordem Alfabética
         monthContracts.sort(Comparator.comparing(MonthContract::getName));
 
         return monthContracts;
+    }
+
+    private static Stream<Contract> getAssociateContractsStream(Long associateCode, Calendar calendar) {
+        return Tps_Model.getContracts().stream().filter(
+                c -> c.getAssociadoCodigo() == associateCode
+                && isCalendarsInTheSameMonth(c.getDataProposta(), calendar)
+        );
     }
 
     private static boolean isCalendarsInTheSameMonth(Calendar calOne, Calendar calTwo) {

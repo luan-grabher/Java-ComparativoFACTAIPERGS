@@ -30,8 +30,8 @@ public class FactaView {
 
     private final Map<String, BigDecimal> totals;
     private final List<MonthContract> monthContracts;
-    private final Calendar monthWorked;
-    private final Calendar lastMonth;
+    private final Calendar inclusionCalendar;
+    private final Calendar referenceCalendar;
     private final File saveFolder;
 
     private final Integer initialRow = 2;
@@ -46,15 +46,15 @@ public class FactaView {
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
 
-    public FactaView(Map<String, BigDecimal> totals, List<MonthContract> monthContracts, File saveFolder, Calendar monthWorked) {
+    public FactaView(Map<String, BigDecimal> totals, List<MonthContract> monthContracts, File saveFolder, Calendar inclusionCalendar) {
         this.totals = totals;
         this.monthContracts = monthContracts;
         this.saveFolder = saveFolder;
-        this.monthWorked = monthWorked;
+        this.inclusionCalendar = inclusionCalendar;
 
-        this.lastMonth = Calendar.getInstance();
-        this.lastMonth.setTime(monthWorked.getTime());
-        this.lastMonth.add(Calendar.MONTH, -1);
+        this.referenceCalendar = Calendar.getInstance();
+        this.referenceCalendar.setTime(inclusionCalendar.getTime());
+        this.referenceCalendar.add(Calendar.MONTH, +1);
     }
 
     public void createExcelFile() {
@@ -87,11 +87,11 @@ public class FactaView {
     }
 
     private void printTitle() {
-        String defaultTitle = "REPASSE REFERENTE À INCLUSÃO #lastMonthName REF. #month/#year";
+        String defaultTitle = "REPASSE REFERENTE À INCLUSÃO #inclusionMonth REF. #referenceCalendarMonth/#referenceCalendarYear";
 
-        String title = defaultTitle.replaceAll("#lastMonthName", lastMonth.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
-        title = title.replaceAll("#month", "" + (monthWorked.get(Calendar.MONTH) + 1));
-        title = title.replaceAll("#year", "" + monthWorked.get(Calendar.YEAR));
+        String title = defaultTitle.replaceAll("#inclusionMonth", inclusionCalendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        title = title.replaceAll("#referenceCalendarMonth", "" + (referenceCalendar.get(Calendar.MONTH) + 1));
+        title = title.replaceAll("#referenceCalendarYear", "" + referenceCalendar.get(Calendar.YEAR));
         title = title.toUpperCase();
 
         sheet.getRow(0).getCell(0).setCellValue(title);
@@ -239,7 +239,7 @@ public class FactaView {
     }
 
     private void saveFile() {
-        String defaultName = "Repasse FACTA " + (monthWorked.get(Calendar.MONTH) + 1) + " " + monthWorked.get(Calendar.YEAR);
+        String defaultName = "Repasse FACTA " + (inclusionCalendar.get(Calendar.MONTH) + 1) + " " + inclusionCalendar.get(Calendar.YEAR);
         JExcel.saveWorkbookAs(new File(saveFolder.getAbsolutePath() + "\\" + defaultName + ".xlsx"), workbook);
     }
 }

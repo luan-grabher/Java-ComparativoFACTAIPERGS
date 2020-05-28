@@ -10,30 +10,28 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.xssf.usermodel.XSSFFormulaEvaluator;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import tpsdb.Model.Entities.Contract;
 
 public class WarningsView {
 
     private XSSFWorkbook workbook;
     private XSSFSheet sheet;
 
-    private final Calendar month;
-    private final Calendar lastMonth;
+    private final Calendar inclusionCalendar;
+    private final Calendar referenceCalendar;
     private final File saveFolder;
     private final List<WarningOrError> warnings;
 
     public WarningsView(File saveFolder, List<WarningOrError> warnings, Calendar month) {
         this.saveFolder = saveFolder;
-        this.month = month;
+        this.inclusionCalendar = month;
         this.warnings = warnings;
         
-        this.lastMonth = Calendar.getInstance();
-        this.lastMonth.setTime(month.getTime());
-        this.lastMonth.add(Calendar.MONTH, -1);
+        this.referenceCalendar = Calendar.getInstance();
+        this.referenceCalendar.setTime(month.getTime());
+        this.referenceCalendar.add(Calendar.MONTH, +1);
     }
 
     public void createExcelFile() {
@@ -63,11 +61,11 @@ public class WarningsView {
     }
 
     private void printTitle() {
-        String defaultTitle = "AVISOS E ERROS REFERENTE À INCLUSÃO #lastMonthName REF. #month/#year";
+        String defaultTitle = "AVISOS E ERROS REFERENTE À INCLUSÃO #inclusionMonth REF. #referenceCalendarMonth/#referenceCalendarYear";
 
-        String title = defaultTitle.replaceAll("#lastMonthName", lastMonth.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
-        title = title.replaceAll("#month", "" + (month.get(Calendar.MONTH) + 1));
-        title = title.replaceAll("#year", "" + month.get(Calendar.YEAR));
+        String title = defaultTitle.replaceAll("#inclusionMonth", inclusionCalendar.getDisplayName(Calendar.MONTH, Calendar.LONG, Locale.getDefault()));
+        title = title.replaceAll("#referenceCalendarMonth", "" + (referenceCalendar.get(Calendar.MONTH) + 1));
+        title = title.replaceAll("#referenceCalendarYear", "" + referenceCalendar.get(Calendar.YEAR));
         title = title.toUpperCase();
 
         sheet.getRow(0).getCell(0).setCellValue(title);
@@ -91,7 +89,7 @@ public class WarningsView {
     }
 
     private void saveFile() {
-        String defaultName = "Avisos e Erros " + (month.get(Calendar.MONTH) + 1) + " " + month.get(Calendar.YEAR);
+        String defaultName = "Avisos e Erros " + (inclusionCalendar.get(Calendar.MONTH) + 1) + " " + inclusionCalendar.get(Calendar.YEAR);
         JExcel.saveWorkbookAs(new File(saveFolder.getAbsolutePath() + "\\" + defaultName + ".xlsx"), workbook);
     }
 }

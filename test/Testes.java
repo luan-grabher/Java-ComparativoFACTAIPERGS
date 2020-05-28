@@ -8,7 +8,6 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.swing.plaf.ProgressBarUI;
 import main.ComparativoFACTAIPERGS;
 
 public class Testes {
@@ -19,12 +18,12 @@ public class Testes {
     }
 
     public static void all() {
-        File folder = new File("C:\\Users\\ti01\\Documents\\NetBeans Projects\\Databases");
-        File facta = new File(folder.getAbsolutePath() + "\\facta.txt");
+        File folder = new File("C:\\Users\\User\\Downloads");
+        File facta = new File(folder.getAbsolutePath() + "\\ipe.txt");
         File ipe = new File(folder.getAbsolutePath() + "\\ipe.txt");
 
         Integer year = 2020;
-        Integer month = 3;
+        Integer month = 2;
 
         Calendar filesMonth = Calendar.getInstance();
         filesMonth.set(Calendar.YEAR, year);

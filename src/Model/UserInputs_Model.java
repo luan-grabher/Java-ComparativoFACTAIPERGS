@@ -1,7 +1,7 @@
 package Model;
 
 import Entity.Executavel;
-import Executor.View.View;
+import SimpleView.View;
 import java.io.File;
 import java.util.Calendar;
 
@@ -16,7 +16,7 @@ public class UserInputs_Model {
     public class setFactaFile extends Executavel {
 
         public setFactaFile() {
-            nome = "Pegando arquivo da FACTA";
+            name = "Pegando arquivo da FACTA";
         }
 
         @Override
@@ -37,7 +37,7 @@ public class UserInputs_Model {
     public class setIpergsFile extends Executavel {
 
         public setIpergsFile() {
-            nome = "Pegando arquivo da IPERGS";
+            name = "Pegando arquivo da IPERGS";
         }
 
         @Override
@@ -55,7 +55,7 @@ public class UserInputs_Model {
     public class setMonthWorked extends Executavel {
 
         public setMonthWorked() {
-            nome = "Definindo mês dos arquivos";
+            name = "Definindo mês dos arquivos";
         }
 
         @Override
@@ -66,8 +66,8 @@ public class UserInputs_Model {
             
             String[] yearsList = new String[]{String.valueOf(thisYear), String.valueOf(thisYear-1), String.valueOf(thisYear-2),String.valueOf(thisYear-3)};
 
-            Integer yearSelected = View.chooseOption("Escolha o ano", "Escolha o ano em que os valores pertencem", yearsList);
-            Integer monthSelected = View.chooseOption("Escolha o mês", "Escolha o mês em que os valores pertencem", monthList);
+            Integer yearSelected = View.chooseButton("Escolha o ano em que os valores pertencem", yearsList);
+            Integer monthSelected = View.chooseButton("Escolha o mês em que os valores pertencem", monthList);
             
             monthWork = Calendar.getInstance();
             monthWork.set(Calendar.DAY_OF_MONTH, 1);

@@ -1,10 +1,10 @@
 package Model;
 
 import Model.Entities.LctoTxt;
+import fileManager.FileManager;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
-import main.Arquivo;
 
 public class LctosTxtEmprestimos_Model {
 
@@ -14,7 +14,7 @@ public class LctosTxtEmprestimos_Model {
 
     public LctosTxtEmprestimos_Model(File arquivo) {
         this.lctos = new ArrayList<>();
-        textOfFile = Arquivo.ler(arquivo.getAbsolutePath());
+        textOfFile = FileManager.getText(arquivo.getAbsolutePath());
         status = constructList();
     }
 

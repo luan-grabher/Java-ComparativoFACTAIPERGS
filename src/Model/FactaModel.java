@@ -3,6 +3,7 @@ package Model;
 import Model.Entities.FactaLcto;
 import Model.Entities.IpergsLcto;
 import Model.Entities.MonthContract;
+import fileManager.FileManager;
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -14,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import main.Arquivo;
 import tpsdb.Model.Entities.Associate;
 import tpsdb.Model.Entities.Contract;
 import tpsdb.Model.Tps_Model;
@@ -79,7 +79,7 @@ public class FactaModel {
             Integer[] mapProposta = {130};
 
             //Abre arquivo
-            String texto = Arquivo.ler(file.getAbsolutePath());
+            String texto = FileManager.getText(file.getAbsolutePath());
             String[] linhas = texto.split("\n");
 
             //Percorre todas as linhas

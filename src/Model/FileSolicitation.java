@@ -1,6 +1,6 @@
 package Model;
 
-import Executor.View.View;
+import SimpleView.View;
 import java.io.File;
 
 

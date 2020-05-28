@@ -16,7 +16,6 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
-import main.Arquivo;
 import tpsdb.Model.Tps_Model;
 
 public class Controller {
@@ -34,7 +33,7 @@ public class Controller {
         private Calendar month;
         public setMonthWorked(Calendar month) {
             this.month = month;
-            nome = "Definindo mês dos arquivos";
+            name =  "Definindo mês dos arquivos";
         }
 
         @Override
@@ -50,7 +49,7 @@ public class Controller {
 
         public setFactaLctos(File file) {
             this.file = file;
-            nome = "Buscar informações do arquivo FACTA";
+            name =  "Buscar informações do arquivo FACTA";
         }
 
         @Override
@@ -67,7 +66,7 @@ public class Controller {
 
         public setIpergsLctos(File file) {
             this.file = file;
-            nome = "Buscar informações do arquivo IPERGS";
+            name =  "Buscar informações do arquivo IPERGS";
         }
 
         @Override
@@ -81,12 +80,12 @@ public class Controller {
     public class setAssociados extends Executavel {
 
         public setAssociados() {
-            nome = "Buscando informações dos associados no banco de dados.";
+            name =  "Buscando informações dos associados no banco de dados.";
         }
 
         @Override
         public void run() {
-            Tps_Model.serAssociates();
+            Tps_Model.setAssociates();
         }
 
     }
@@ -94,7 +93,7 @@ public class Controller {
     public class setContratos extends Executavel {
 
         public setContratos() {
-            nome = "Buscando informações dos contratos dos associados do banco de dados";
+            name =  "Buscando informações dos contratos dos associados do banco de dados";
         }
 
         @Override
@@ -109,7 +108,7 @@ public class Controller {
 
         public setListMonthPersons(Calendar monthWork) {
             this.monthWork = monthWork;
-            nome = "Definindo lista de pessoas que estão no IPERGS e tem contrato no mês informado";
+            name =  "Definindo lista de pessoas que estão no IPERGS e tem contrato no mês informado";
         }
 
         @Override
@@ -123,7 +122,7 @@ public class Controller {
     public class setListTotals extends Executavel {
 
         public setListTotals() {
-            nome = "Definindo totais";
+            name =  "Definindo totais";
         }
 
         @Override
@@ -141,7 +140,7 @@ public class Controller {
         public createFactaFinalView(File saveFolder, Calendar monthWorked) {
             this.saveFolder = saveFolder;
             this.monthWorked = monthWorked;
-            nome = "Criando arquivo final FACTA";
+            name =  "Criando arquivo final FACTA";
         }
 
         @Override
@@ -159,7 +158,7 @@ public class Controller {
         public createWarnings(Calendar monthWorked) {
 
             this.monthWorked = monthWorked;
-            nome = "Criando avisos e erros.";
+            name =  "Criando avisos e erros.";
         }
 
         @Override
@@ -178,7 +177,7 @@ public class Controller {
 
         public createWarningsView(File saveFolder) {
             this.saveFolder = saveFolder;
-            nome = "Criando arquivo de avisos e erros.";
+            name =  "Criando arquivo de avisos e erros.";
         }
 
         @Override

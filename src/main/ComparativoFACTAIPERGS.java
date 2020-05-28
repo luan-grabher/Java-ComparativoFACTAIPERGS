@@ -50,9 +50,9 @@ public class ComparativoFACTAIPERGS {
         execs.add(model.new setMonthWorked());
         
         Execution exec = new Execution("Pegando informações com o usuário");
-        exec.setExecutaveis(execs);
-        exec.rodarExecutaveis();
-        exec.finalizar();
+        exec.setExecutables(execs);
+        exec.runExecutables();
+        exec.endExecution(false);
         
         //Define arquivos
         factaFile = model.getFactaFile();
@@ -82,9 +82,9 @@ public class ComparativoFACTAIPERGS {
         execs.add(controller.new createWarningsView(saveFolder));
         
         Execution exec = new Execution("Comparativo FACTA x IPERGS");
-        exec.setExecutaveis(execs);
-        exec.rodarExecutaveis();
-        exec.finalizar();
+        exec.setExecutables(execs);
+        exec.runExecutables();
+        exec.endExecution();
         
         return exec;
     }
